@@ -35,22 +35,24 @@ class Cliente extends map\ClienteMap {
     }
 
     public function listByFilter($filter) {
-        $criteria = $this->getCriteria()->select('*')->orderBy('idCliente');
-        if ($filter->nome) {
-            $criteria->where("nome LIKE '{$filter->nome}%'");
-        }
-        return $criteria;
+        /**
+          $criteria = $this->getCriteria()->select('*')->orderBy('idCliente');
+          if ($filter->nome) {
+          $criteria->where("nome LIKE '{$filter->nome}%'");
+          }
+          return $criteria;
+         */
+        
+        throw new \RuntimeException("Ocorreu um erro ao fazer a pesquisa.");
+    
     }
 
     public function save() {
         if (!$this->isPersistent()) {
-           $this->setDataCadastro(\Manager::getSysTime()); 
+            $this->setDataCadastro(\Manager::getSysTime());
         }
         $this->setDataUltimaAtualizacao(\Manager::getSysTime());
-        mdump("$$$$$$");
-        mdump($this->isPersistent());
-        mdump($this->getData());
-        //parent::save();
+        parent::save();
     }
 
 }

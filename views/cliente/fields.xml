@@ -3,9 +3,9 @@
 <view>
     <fields>
         <mhiddenfield id="cliente::idCliente" />        
-        <mtextfield id="cliente::nome" label="Nome" />        
-        <mtextfield id="cliente::email" label="Email" />        
-        <mtextfield id="cliente::telefone" label="Telefone" />
+        <mtextfield id="cliente::nome" label="Nome:" width="400px" />        
+        <mtextfield id="cliente::email" label="Email:" width="320px" />        
+        <mtextfield id="cliente::telefone" label="Telefone:" />
     </fields>
     <buttons>
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>

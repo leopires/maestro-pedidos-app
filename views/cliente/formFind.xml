@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
-    <mform id="formFind" title="Pesquisar" close=">pedidos/main" base="formBase">
+    <mform id="formFind" title="Pesquisa de Clientes" base="formBase">
         <fields>
             <mhcontainer>
-                <mtextfield id="txtNomeCliente" label="Cliente" value="$this->data->nomeCliente"/>
+                <mtextfield id="nomeCliente" width="350px" label="Cliente" value="$this->data->nomeCliente"/>
                 <mbuttonfind/>
             </mhcontainer>
+            <mspacer height="10px"/>
             <mdatagrid id="gridFind" query="$this->data->query" pageLength="15">
                 <mdatagridcolumn field="idCliente" visible="false"/>
                 <mdatagridhyperlink field="nome" action=">pedidos/cliente/formObject/#0#" title="Cliente" width="35%"/>

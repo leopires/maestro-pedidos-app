@@ -68,8 +68,8 @@ class ClienteController extends MController {
         $cliente->setEmail($this->data->cliente->email);
         $cliente->setTelefone($this->data->cliente->telefone);
         $cliente->save();
-        //$go = '>pedidos/cliente/formObject/' . $cliente->getId();
-        //$this->renderPrompt('information', 'OK', $go);
+        $go = '>pedidos/cliente/formObject/' . $cliente->getId();
+        $this->renderPrompt('information', 'Dados do cliente: ' . $cliente->getNome() . ' gravados com sucesso.', $go);
     }
 
     public function delete() {
