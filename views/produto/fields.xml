@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <fields>
+         <mhiddenfield id="produto::idProduto" />        
+<mtextfield id="produto::nome" label="Nome" />        
+<mtextfield id="produto::descricao" label="Descricao" />        
+<mtextfield id="produto::codigoEAN" label="CodigoEAN" />        
+<mcalendarfield id="produto::dataCadastro" label="DataCadastro" />        
+<mcalendarfield id="produto::dataUltimaAtualizacao" label="DataUltimaAtualizacao" />
+    </fields>
+    <buttons>
+        <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
+    </buttons>
+    <validators>
+    </validators>
+</view>

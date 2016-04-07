@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <fields>
+         <mhiddenfield id="pedido::idPedido" />        
+<mcalendarfield id="pedido::dataCriacao" label="DataCriacao" />        
+<mcalendarfield id="pedido::dataUltimaAtualizacao" label="DataUltimaAtualizacao" />        
+<mlookupfieldvalue id="pedido::idVendedorDesc"  label="Vendedor"  related="pedido::idVendedor:idVendedor,pedido::idVendedorDesc:descricao" action="pedidos/vendedor/lookup" /><mhiddenfield id="pedido::idVendedor" />
+    </fields>
+    <buttons>
+        <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
+    </buttons>
+    <validators>
+    </validators>
+</view>

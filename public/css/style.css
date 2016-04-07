@@ -1,0 +1,17 @@
+.iconVendedor {
+    background-image: url(../images/icons/32px/ico_vendedor.png);
+}
+
+.iconCliente {
+    background-image: url(../images/icons/32px/ico_cliente.png);
+}
+
+.iconProduto {
+    background-image: url(../images/icons/32px/ico_produto.png);
+}
+
+.iconPedido {
+    background-image: url(../images/icons/32px/ico_pedido.png);
+}
+
+

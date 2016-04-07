@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <mform id="formFind" title="Pesquisar" close=">pedidos/main" base="formBase">
+        <fields>
+            <mhcontainer>
+                <mtextfield id="idPedidoItem" label="IdPedidoItem" value="$this->data->idPedidoItem" size="15" />
+                <mbuttonfind/>
+            </mhcontainer>
+            <mdatagrid id="gridFind" query="$this->data->query" pageLength="15">
+                <mdatagridcolumn field="idPedidoItem" visible="false"/>
+                <mdatagridhyperlink field="idPedidoItem" action=">pedidos/pedidoitem/formObject/#0#" title="IdPedidoItem" width="100%"/>
+            </mdatagrid>
+        </fields>
+    </mform>
+</view>
