@@ -2,12 +2,16 @@
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
     <fields>
-         <mhiddenfield id="vendedor::idVendedor" />        
-<mtextfield id="vendedor::nome" label="Nome" />        
-<mtextfield id="vendedor::cpf" label="Cpf" />        
-<mtextfield id="vendedor::email" label="Email" />        
-<mcalendarfield id="vendedor::dataCadastro" label="DataCadastro" />        
-<mcalendarfield id="vendedor::dataUltimaAtualizacao" label="DataUltimaAtualizacao" />
+        
+        <mhiddenfield id="vendedor::idVendedor" />
+        <mseparator label="Idendificação do vendedor"/> 
+        <mhcontainer>
+            <mtextfield id="vendedor::nome" label="Nome do vendedor:" width="415px" /> 
+            <mcpffield id="vendedor::cpf" label="CPF:" width="130px"/> 
+        </mhcontainer>
+        <mspacer height="10px"/>
+        <mseparator label="Contato"/> 
+        <memailfield id="vendedor::email" label="E-Mail:" width="180px" />
     </fields>
     <buttons>
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>

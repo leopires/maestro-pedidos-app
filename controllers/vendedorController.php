@@ -1,4 +1,5 @@
 <?php
+
 /**
  * $_comment
  *
@@ -10,8 +11,10 @@
  * @version    
  * @since      
  */
-
 Manager::import("pedidos\models\*");
+
+use pedidos\models\Vendedor as Vendedor;
+use pedidos\exceptions\ModelException as ModelException;
 
 class VendedorController extends MController {
 
@@ -20,10 +23,13 @@ class VendedorController extends MController {
     }
 
     public function formFind() {
-        $vendedor= new Vendedor($this->data->id);
-        $filter->idVendedor = $this->data->idVendedor;
-        $this->data->query = $vendedor->listByFilter($filter)->asQuery();
-        $this->render();
+        $vendedor = new Vendedor();
+        try {
+            $this->data->query = $vendedor->listByNome($this->data->nomeVendedor)->asQuery();
+            $this->render();
+        } catch (Exception $ex) {
+            
+        }
     }
 
     public function formNew() {
@@ -37,10 +43,10 @@ class VendedorController extends MController {
     }
 
     public function formUpdate() {
-        $vendedor= new Vendedor($this->data->id);
+        $vendedor = new Vendedor($this->data->id);
         $this->data->vendedor = $vendedor->getData();
-        
-        $this->data->action = '@pedidos/vendedor/save/' .  $this->data->id;
+
+        $this->data->action = '@pedidos/vendedor/save/' . $this->data->id;
         $this->render();
     }
 
@@ -59,17 +65,17 @@ class VendedorController extends MController {
     }
 
     public function save() {
-            $vendedor = new Vendedor($this->data->vendedor);
-            $vendedor->save();
-            $go = '>pedidos/vendedor/formObject/' . $vendedor->getId();
-            $this->renderPrompt('information','OK',$go);
+        $vendedor = new Vendedor($this->data->vendedor);
+        $vendedor->save();
+        $go = '>pedidos/vendedor/formObject/' . $vendedor->getId();
+        $this->renderPrompt('information', 'OK', $go);
     }
 
     public function delete() {
-            $vendedor = new Vendedor($this->data->id);
-            $vendedor->delete();
-            $go = '>pedidos/vendedor/formFind';
-            $this->renderPrompt('information',"Vendedor [{$this->data->idVendedor}] removido.", $go);
+        $vendedor = new Vendedor($this->data->id);
+        $vendedor->delete();
+        $go = '>pedidos/vendedor/formFind';
+        $this->renderPrompt('information', "Vendedor [{$this->data->idVendedor}] removido.", $go);
     }
 
 }

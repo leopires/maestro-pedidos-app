@@ -23,12 +23,12 @@ class VendedorMap extends \MBusinessModel {
             'database' => 'db_pedidos',
             'table' => 'VENDEDOR',
             'attributes' => array(
-                'idVendedor' => array('column' => 'idVendedor','key' => 'primary','idgenerator' => 'seq_VENDEDOR','type' => 'integer'),
+                'idVendedor' => array('column' => 'idVendedor','key' => 'primary','idgenerator' => 'identity','type' => 'integer'),
                 'nome' => array('column' => 'nome','type' => 'string'),
                 'cpf' => array('column' => 'cpf','type' => 'string'),
                 'email' => array('column' => 'email','type' => 'string'),
-                'dataCadastro' => array('column' => 'dataCadastro','type' => 'date'),
-                'dataUltimaAtualizacao' => array('column' => 'dataUltimaAtualizacao','type' => 'date'),
+                'dataCadastro' => array('column' => 'dataCadastro','type' => 'timestamp'),
+                'dataUltimaAtualizacao' => array('column' => 'dataUltimaAtualizacao','type' => 'timestamp'),
             ),
             'associations' => array(
                 'carteiraClientes' => array('toClass' => 'pedidos\models\cliente', 'cardinality' => 'manyToMany' , 'associative' => 'CLIENTE_VENDEDOR'), 
@@ -115,8 +115,8 @@ class VendedorMap extends \MBusinessModel {
     }
 
     public function setDataCadastro($value) {
-        if (!($value instanceof \MDate)) {
-            $value = new \MDate($value);
+        if (!($value instanceof \MTimestamp)) {
+            $value = new \MTimestamp($value);
         }
         $this->dataCadastro = $value;
     }
@@ -126,8 +126,8 @@ class VendedorMap extends \MBusinessModel {
     }
 
     public function setDataUltimaAtualizacao($value) {
-        if (!($value instanceof \MDate)) {
-            $value = new \MDate($value);
+        if (!($value instanceof \MTimestamp)) {
+            $value = new \MTimestamp($value);
         }
         $this->dataUltimaAtualizacao = $value;
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  *
@@ -13,28 +14,59 @@
 
 namespace pedidos\models;
 
+require_once 'exceptions/ModelException.php';
+
+use pedidos\exceptions\ModelException as ModelException;
+
 class Vendedor extends map\VendedorMap {
 
     public static function config() {
         return array(
-            'log' => array(  ),
+            'log' => array(),
             'validators' => array(
+                'nome' => array('notnull', 'notblank'),
+                'cpf' => array('notnull', 'notblank'),
+                'email' => array('notnull', 'notblank'),
+                'dataCadastro' => array('notnull', 'notblank'),
+                'dataUltimaAtualizacao' => array('notnull', 'notblank'),
             ),
             'converters' => array()
         );
     }
-    
-    public function getDescription(){
-        return $this->getIdVendedor();
+
+    private function getBasicCriteria() {
+        return $this->getCriteria()->select('*');
     }
 
-    public function listByFilter($filter){
-        $criteria = $this->getCriteria()->select('*')->orderBy('idVendedor');
-        if ($filter->idVendedor){
-            $criteria->where("idVendedor LIKE '{$filter->idVendedor}%'");
-        }
-        return $criteria;
+    public function getDescription() {
+        return $this->getNome();
     }
+
+    /**
+     * Faz uma pesquina nos Vendedor pelo nome.
+     * @param String $nome Nome ou parte do nome a ser pesquisado.
+     * @return Criteria Pesquisa a ser executada.
+     */
+    public function listByNome($nome) {
+        $nomeCliente = filter_var($nome, FILTER_SANITIZE_MAGIC_QUOTES);
+        return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
+    }
+
+    public function save() {
+        try {
+            
+            $this->setCpf(str_replace("-", "", str_replace(".", "", $this->getCpf())));
+            
+            if (!$this->isPersistent()) {
+                $this->setDataCadastro(\Manager::getSysTime());
+            }
+            $this->setDataUltimaAtualizacao(\Manager::getSysTime());
+            parent::save();
+        } catch (\Exception $ex) {
+            throw $ex;
+        }
+    }
+
 }
 
 ?>

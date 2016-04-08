@@ -14,6 +14,10 @@
 
 namespace pedidos\models;
 
+require_once 'exceptions/ModelException.php';
+
+use pedidos\exceptions\ModelException as ModelException;
+
 class Cliente extends map\ClienteMap {
 
     public static function config() {
@@ -34,25 +38,37 @@ class Cliente extends map\ClienteMap {
         return $this->getNome();
     }
 
-    public function listByFilter($filter) {
-        /**
-          $criteria = $this->getCriteria()->select('*')->orderBy('idCliente');
-          if ($filter->nome) {
-          $criteria->where("nome LIKE '{$filter->nome}%'");
-          }
-          return $criteria;
-         */
-        
-        throw new \RuntimeException("Ocorreu um erro ao fazer a pesquisa.");
-    
+    private function getBasicCriteria() {
+        $criteria = $this->getCriteria()->select('*');
+        return $criteria;
+    }
+
+    /**
+     * Faz uma pesquina nos Clientes pelo nome.
+     * @param String $nome Nome ou parte do nome a ser pesquisado.
+     * @return Criteria Pesquisa a ser executada.
+     */
+    public function listByNome($nome) {
+        $nomeCliente = filter_var($nome, FILTER_SANITIZE_MAGIC_QUOTES);
+        return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
     }
 
     public function save() {
-        if (!$this->isPersistent()) {
-            $this->setDataCadastro(\Manager::getSysTime());
+
+        try {
+            if (!$this->isPersistent()) {
+                $this->setDataCadastro(\Manager::getSysTime());
+            }
+            $this->setDataUltimaAtualizacao(\Manager::getSysTime());
+            parent::save();
+        } catch (\Exception $ex) {
+                        
+            if (((strpos($ex->getMessage(), "23000") !== false)) && (strpos($ex->getMessage(), "email"))) {
+                throw new ModelException("O e-mail informado já está cadastrado para outra pessoa.");
+            } else {
+                throw new \Exception("Ocorreu um erro ao salvar os dados do Cliente.");
+            }
         }
-        $this->setDataUltimaAtualizacao(\Manager::getSysTime());
-        parent::save();
     }
 
 }
