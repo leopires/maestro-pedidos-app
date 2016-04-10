@@ -2,16 +2,18 @@
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
     <fields>
-         <mhiddenfield id="produto::idProduto" />        
-<mtextfield id="produto::nome" label="Nome" />        
-<mtextfield id="produto::descricao" label="Descricao" />        
-<mtextfield id="produto::codigoEAN" label="CodigoEAN" />        
-<mcalendarfield id="produto::dataCadastro" label="DataCadastro" />        
-<mcalendarfield id="produto::dataUltimaAtualizacao" label="DataUltimaAtualizacao" />
+        <mhiddenfield id="produto::idProduto" />
+        <mhcontainer>
+            <mtextfield id="produto::nome" label="Nome do produto:" width="380px" /> 
+            <mtextfield id="produto::codigoEAN" label="Código EAN:" width="200px" />
+        </mhcontainer>        
+        <mmultilinefield id="produto::descricao" label="Descrição do produto:" rows="8" cols="90"/>
     </fields>
     <buttons>
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
     </buttons>
     <validators>
+        <mrequiredvalidator field="produto::nome" message="O nome do produto deve ser informato."/>
+        <mrequiredvalidator field="produto::codigoEAN" message="O código EAN do produto deve ser informato."/>
     </validators>
 </view>

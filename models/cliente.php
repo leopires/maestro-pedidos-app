@@ -52,7 +52,15 @@ class Cliente extends map\ClienteMap {
         $nomeCliente = filter_var($nome, FILTER_SANITIZE_MAGIC_QUOTES);
         return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
     }
-
+    
+    public function listByVendedor($idVendedor) {
+        try {
+            return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
+        } catch (Exception $ex) {
+            throw new ModelException("Ocorreu um erro ao recuperar os Clientes do Vendedor.");
+        }
+    }
+    
     public function save() {
 
         try {

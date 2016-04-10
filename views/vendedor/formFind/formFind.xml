@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <tool title="Ajuda" action="help:form" icon="help" />
+    <fields>
+        <mhcontainer>
+            <mtextfield id="nomeVendedor" label="Nome do vendedor" value="$this->data->nomeVendedor" width="350px" />
+            <mbuttonfind/>
+        </mhcontainer>
+        <mspacer height="10px"/>
+        <mdatagrid id="gridFind" query="$this->data->query" pageLength="15" rowMethod="{{ array('formFind','loadClientesAndPedidos')}}">
+            <mdatagridcolumn field="idVendedor" visible="false"/>
+            <mdatagridhyperlink field="nome" action=">pedidos/vendedor/formObject/#0#" title="Vendedor" width="40%"/>
+            <mdatagridcolumn field="email" title="E-Mail" width="20%" />
+            <mdatagridcolumn field="totalClientes" title="Qtd. Clientes" width="20%" />
+            <mdatagridcolumn field="totalPedidos" title="Pedidos emitidos" width="20%" />
+        </mdatagrid>
+    </fields>
+    <help>
+        <mhelp id="form" caption="Ajuda - Pesquisa de vendedores">
+<![CDATA[
+<h1>Ajuda</h1>
+<p></p>
+]]>
+        </mhelp>
+    </help>
+</view>

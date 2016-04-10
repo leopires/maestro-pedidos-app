@@ -4,7 +4,5 @@
     <mform id="formBase" title="Vendedor" close=">pedidos/main">
         <action action="formFind" label="Buscar vendedor" />
         <action action="formNew" label="Novo vendedor" />
-        <action action="formCarteiraCliente" label="Carteira de clientes" />
-        <action action="formHistoricoPedidos" label="Histórico de pedidos" />
     </mform>
 </view>

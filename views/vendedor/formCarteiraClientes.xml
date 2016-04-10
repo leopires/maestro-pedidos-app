@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <mform id="formCarteiraClientes" title="{{$this->data->title}}" close="{{'pedidos/vendedor/formObject/'.$this->data->id}}" base="formObject">
+        <tool title="Ajuda" action="help:form" icon="help" />
+        <fields>
+            <mhiddenfield id="idVendedor" value="{{$this->data->id}}"/>
+            <mbasegroup id="bsgrpAddClienteCarteira" caption="Carteira de Clientes - Incluir cliente">
+                <mhcontainer>
+                    <mhiddenfield id="idCliente"/>
+                    <mlookupfieldvalue id="nomeCliente" label="Cliente" width="300px" action="cliente/lookup" related="idCliente:idCliente,nomeCliente:nome"/>
+                    <mbutton id="btnAddClienteCarteira" text="Adicionar" action="@pedidos/vendedor/addClienteCarteira"/>
+                </mhcontainer>    
+            </mbasegroup> 
+            <mspacer height="10px"/>
+            <mdatagrid id="gridCarteiraClientes" query="$this->data->query" pageLength="30"
+                       actionDelete="@pedidos/vendedor/removeClienteCarteira/#0#"            >
+                <mdatagridcolumn field="idCliente" visible="false"/>
+                <mdatagridcolumn field="nome" title="Cliente" width="70%"/>
+                <mdatagridcolumn field="email" title="E-Mail" width="30%" />
+            </mdatagrid>
+        </fields>
+        <help>
+            <mhelp id="form" caption="Ajuda - Carteira de clientes">
+<![CDATA[
+<h1>Ajuda</h1>
+<p></p>
+]]>
+            </mhelp>
+        </help>
+    </mform>
+</view>

@@ -5,5 +5,7 @@
         <property title="$this->data->vendedor->description" />
         <action action="{{ 'formUpdate/' . $this->data->id }}" label="Editar" />
         <action action="{{ 'formDelete/' . $this->data->id }}" label="Excluir" />
+        <action action="{{ 'formCarteiraClientes/' . $this->data->id }}" label="Carteira de clientes" />
+        <action action="{{ 'formHistoricoPedidos/' . $this->data->id }}" label="Histórico de pedidos" />
     </mform>
 </view>

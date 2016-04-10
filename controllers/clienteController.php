@@ -66,10 +66,14 @@ class ClienteController extends MController {
     }
 
     public function lookup() {
-        $model = new Cliente();
-        $filter->idCliente = $this->data->idCliente;
-        $this->data->query = $model->listByFilter($filter)->asQuery();
-        $this->render();
+
+        try {
+            $cliente = new Cliente();
+            $this->data->query = $cliente->listByNome($this->data->nomeCliente);
+            $this->render();
+        } catch (Exception $ex) {
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, "Erro ao abrir lookup para pesquisa de Clientes.");
+        }
     }
 
     public function save() {

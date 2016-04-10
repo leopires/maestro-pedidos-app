@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @category   Maestro
  * @package    UFJF
@@ -8,14 +9,12 @@
  * @version
  * @since
  */
-
 // wizard - code section created by Wizard Module
 
 namespace pedidos\models\map;
 
 class PedidoMap extends \MBusinessModel {
 
-    
     public static function ORMMap() {
 
         return array(
@@ -23,46 +22,51 @@ class PedidoMap extends \MBusinessModel {
             'database' => 'db_pedidos',
             'table' => 'PEDIDO',
             'attributes' => array(
-                'idPedido' => array('column' => 'idPedido','key' => 'primary','idgenerator' => 'seq_PEDIDO','type' => 'long'),
-                'situacao' => array('column' => 'situacao','type' => 'byte'),
-                'dataCriacao' => array('column' => 'dataCriacao','type' => 'date'),
-                'dataUltimaAtualizacao' => array('column' => 'dataUltimaAlteracao','type' => 'date'),
-                'idCliente' => array('column' => 'idCliente','key' => 'foreign','type' => 'long'),
-                'idVendedor' => array('column' => 'idVendedor','key' => 'foreign','type' => 'integer'),
+                'idPedido' => array('column' => 'idPedido', 'key' => 'primary', 'idgenerator' => 'identity', 'type' => 'long'),
+                'situacao' => array('column' => 'situacao', 'type' => 'byte'),
+                'dataCriacao' => array('column' => 'dataCriacao', 'type' => 'timestamp'),
+                'dataUltimaAtualizacao' => array('column' => 'dataUltimaAlteracao', 'type' => 'timestamp'),
+                'idCliente' => array('column' => 'idCliente', 'key' => 'foreign', 'type' => 'long'),
+                'idVendedor' => array('column' => 'idVendedor', 'key' => 'foreign', 'type' => 'integer'),
             ),
             'associations' => array(
-                'cliente' => array('toClass' => 'pedidos\models\cliente', 'cardinality' => 'oneToOne' , 'keys' => 'idCliente:idCliente'), 
-                'vendedor' => array('toClass' => 'pedidos\models\vendedor', 'cardinality' => 'oneToOne' , 'keys' => 'idVendedor:idVendedor'), 
-                'itensPedido' => array('toClass' => 'pedidos\models\pedidoitem', 'cardinality' => 'oneToMany' , 'keys' => 'idPedido:idPedido'), 
+                'cliente' => array('toClass' => 'pedidos\models\cliente', 'cardinality' => 'oneToOne', 'keys' => 'idCliente:idCliente'),
+                'vendedor' => array('toClass' => 'pedidos\models\vendedor', 'cardinality' => 'oneToOne', 'keys' => 'idVendedor:idVendedor'),
+                'itensPedido' => array('toClass' => 'pedidos\models\pedidoitem', 'cardinality' => 'oneToMany', 'keys' => 'idPedido:idPedido'),
             )
         );
     }
-    
+
     /**
      * 
      * @var long 
      */
     protected $idPedido;
+
     /**
      * 
      * @var byte 
      */
     protected $situacao;
+
     /**
      * 
      * @var date 
      */
     protected $dataCriacao;
+
     /**
      * 
      * @var date 
      */
     protected $dataUltimaAtualizacao;
+
     /**
      * 
      * @var long 
      */
     protected $idCliente;
+
     /**
      * 
      * @var integer 
@@ -75,7 +79,6 @@ class PedidoMap extends \MBusinessModel {
     protected $cliente;
     protected $vendedor;
     protected $itensPedido;
-    
 
     /**
      * Getters/Setters
@@ -101,8 +104,8 @@ class PedidoMap extends \MBusinessModel {
     }
 
     public function setDataCriacao($value) {
-        if (!($value instanceof \MDate)) {
-            $value = new \MDate($value);
+        if (!($value instanceof \MTimestamp)) {
+            $value = new \MTimestamp($value);
         }
         $this->dataCriacao = $value;
     }
@@ -112,8 +115,8 @@ class PedidoMap extends \MBusinessModel {
     }
 
     public function setDataUltimaAtualizacao($value) {
-        if (!($value instanceof \MDate)) {
-            $value = new \MDate($value);
+        if (!($value instanceof \MTimestamp)) {
+            $value = new \MTimestamp($value);
         }
         $this->dataUltimaAtualizacao = $value;
     }
@@ -133,16 +136,18 @@ class PedidoMap extends \MBusinessModel {
     public function setIdVendedor($value) {
         $this->idVendedor = $value;
     }
+
     /**
      *
      * @return Association
      */
     public function getCliente() {
-        if (is_null($this->cliente)){
+        if (is_null($this->cliente)) {
             $this->retrieveAssociation("cliente");
         }
-        return  $this->cliente;
+        return $this->cliente;
     }
+
     /**
      *
      * @param Association $value
@@ -150,6 +155,7 @@ class PedidoMap extends \MBusinessModel {
     public function setCliente($value) {
         $this->cliente = $value;
     }
+
     /**
      *
      * @return Association
@@ -157,16 +163,18 @@ class PedidoMap extends \MBusinessModel {
     public function getAssociationCliente() {
         $this->retrieveAssociation("cliente");
     }
+
     /**
      *
      * @return Association
      */
     public function getVendedor() {
-        if (is_null($this->vendedor)){
+        if (is_null($this->vendedor)) {
             $this->retrieveAssociation("vendedor");
         }
-        return  $this->vendedor;
+        return $this->vendedor;
     }
+
     /**
      *
      * @param Association $value
@@ -174,6 +182,7 @@ class PedidoMap extends \MBusinessModel {
     public function setVendedor($value) {
         $this->vendedor = $value;
     }
+
     /**
      *
      * @return Association
@@ -181,16 +190,18 @@ class PedidoMap extends \MBusinessModel {
     public function getAssociationVendedor() {
         $this->retrieveAssociation("vendedor");
     }
+
     /**
      *
      * @return Association
      */
     public function getItensPedido() {
-        if (is_null($this->itensPedido)){
+        if (is_null($this->itensPedido)) {
             $this->retrieveAssociation("itensPedido");
         }
-        return  $this->itensPedido;
+        return $this->itensPedido;
     }
+
     /**
      *
      * @param Association $value
@@ -198,6 +209,7 @@ class PedidoMap extends \MBusinessModel {
     public function setItensPedido($value) {
         $this->itensPedido = $value;
     }
+
     /**
      *
      * @return Association
@@ -206,9 +218,7 @@ class PedidoMap extends \MBusinessModel {
         $this->retrieveAssociation("itensPedido");
     }
 
-    
-
 }
-// end - wizard
 
+// end - wizard
 ?>
