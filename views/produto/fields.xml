@@ -8,6 +8,10 @@
             <mtextfield id="produto::codigoEAN" label="Código EAN:" width="200px" />
         </mhcontainer>        
         <mmultilinefield id="produto::descricao" label="Descrição do produto:" rows="8" cols="90"/>
+        <mhcontainer>
+            <mselection id="produto::situacao" label="Situação:" options="$this->data->situacoesProduto" type="selectOnly" width="200px" />
+            <mcurrencyfield id="produto::precoUnitario" label="Preço unitário:" width="120px" />
+        </mhcontainer>
     </fields>
     <buttons>
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
@@ -15,5 +19,6 @@
     <validators>
         <mrequiredvalidator field="produto::nome" message="O nome do produto deve ser informato."/>
         <mrequiredvalidator field="produto::codigoEAN" message="O código EAN do produto deve ser informato."/>
+        <mrequiredvalidator field="produto::situacao" message="Informe a situação do produto."/>
     </validators>
 </view>

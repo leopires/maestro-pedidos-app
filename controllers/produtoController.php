@@ -4,18 +4,26 @@ Manager::import("pedidos\models\*");
 
 class ProdutoController extends MController {
 
+    private $situacoesProduto;
+    
+    public function init() {
+        parent::init();
+        $this->situacoesProduto = array("" => "Selecione", "1" => "Ativo", "0" => "Inativo");
+    }
+    
     public function main() {
         $this->render("formBase");
     }
 
     public function formFind() {
-        $produto= new Produto($this->data->id);
+        $produto = new Produto($this->data->id);
         $filter->idProduto = $this->data->idProduto;
         $this->data->query = $produto->listByFilter($filter)->asQuery();
         $this->render();
     }
 
     public function formNew() {
+        $this->data->situacoesProduto = $this->situacoesProduto;
         $this->data->action = '@pedidos/produto/save';
         $this->render();
     }
@@ -26,10 +34,10 @@ class ProdutoController extends MController {
     }
 
     public function formUpdate() {
-        $produto= new Produto($this->data->id);
+        $produto = new Produto($this->data->id);
         $this->data->produto = $produto->getData();
-        
-        $this->data->action = '@pedidos/produto/save/' .  $this->data->id;
+
+        $this->data->action = '@pedidos/produto/save/' . $this->data->id;
         $this->render();
     }
 
@@ -48,17 +56,17 @@ class ProdutoController extends MController {
     }
 
     public function save() {
-            $produto = new Produto($this->data->produto);
-            $produto->save();
-            $go = '>pedidos/produto/formObject/' . $produto->getId();
-            $this->renderPrompt('information','OK',$go);
+        $produto = new Produto($this->data->produto);
+        $produto->save();
+        $go = '>pedidos/produto/formObject/' . $produto->getId();
+        $this->renderPrompt('information', 'OK', $go);
     }
 
     public function delete() {
-            $produto = new Produto($this->data->id);
-            $produto->delete();
-            $go = '>pedidos/produto/formFind';
-            $this->renderPrompt('information',"Produto [{$this->data->idProduto}] removido.", $go);
+        $produto = new Produto($this->data->id);
+        $produto->delete();
+        $go = '>pedidos/produto/formFind';
+        $this->renderPrompt('information', "Produto [{$this->data->idProduto}] removido.", $go);
     }
 
 }
