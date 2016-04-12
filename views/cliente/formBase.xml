@@ -2,7 +2,7 @@
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
     <mform id="formBase" title="Clientes" close=">pedidos/main">
-        <action action="formFind" label="Pesquisar" />
-        <action action="formNew" label="Inserir Novo" />
+        <action action="formFind" label="Buscar cliente" />
+        <action action="formNew" label="Novo cliente" />
     </mform>
 </view>

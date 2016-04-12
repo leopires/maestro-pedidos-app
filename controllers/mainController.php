@@ -13,6 +13,7 @@
 class MainController extends \MController {
 
     public function init(){
+        Manager::checkLogin();
     }
 
     public function main() {

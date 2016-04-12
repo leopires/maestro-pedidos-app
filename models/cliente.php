@@ -30,6 +30,11 @@ class Cliente extends map\ClienteMap {
                 'dataCadastro' => array('notnull', 'notblank'),
                 'dataUltimaAtualizacao' => array('notnull', 'notblank'),
             ),
+            'fieldDescription' => array(
+                'nome' => 'Nome do cliente',
+                'email' => 'E-Mail do cliente',
+                'telefone' => 'Telefone do cliente'
+            ),
             'converters' => array()
         );
     }
@@ -52,7 +57,7 @@ class Cliente extends map\ClienteMap {
         $nomeCliente = filter_var($nome, FILTER_SANITIZE_MAGIC_QUOTES);
         return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
     }
-    
+
     public function listByVendedor($idVendedor) {
         try {
             return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
@@ -60,7 +65,7 @@ class Cliente extends map\ClienteMap {
             throw new ModelException("Ocorreu um erro ao recuperar os Clientes do Vendedor.");
         }
     }
-    
+
     public function save() {
 
         try {
@@ -69,12 +74,13 @@ class Cliente extends map\ClienteMap {
             }
             $this->setDataUltimaAtualizacao(\Manager::getSysTime());
             parent::save();
+        } catch (\MDataValidationException $ex) {
+            throw new ModelException($ex->getMessage());
         } catch (\Exception $ex) {
-                        
             if (((strpos($ex->getMessage(), "23000") !== false)) && (strpos($ex->getMessage(), "email"))) {
                 throw new ModelException("O e-mail informado já está cadastrado para outra pessoa.");
             } else {
-                throw new \Exception("Ocorreu um erro ao salvar os dados do Cliente.");
+                throw new ModelException("Ocorreu um erro ao salvar os dados do Cliente.");
             }
         }
     }

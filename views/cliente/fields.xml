@@ -3,13 +3,19 @@
 <view>
     <fields>
         <mhiddenfield id="cliente::idCliente" />        
-        <mtextfield id="cliente::nome" label="Nome:" width="400px" />        
-        <mtextfield id="cliente::email" label="Email:" width="320px" />        
-        <mtextfield id="cliente::telefone" label="Telefone:" />
+        <mtextfield id="cliente::nome" label="Nome:" width="345px" />
+        <mhcontainer>
+            <mphonefield id="cliente::telefone" label="Telefone:" width="115px"/>
+            <memailfield id="cliente::email" label="E-Mail:" width="220px"/>   
+        </mhcontainer>
     </fields>
     <buttons>
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
     </buttons>
     <validators>
+        <!--
+        <mrequiredvalidator field="cliente::nome" message="O nome do Cliente não foi informado."/>
+        <mrequiredvalidator field="cliente::email" message="O e-mail de contato com o Cliente não foi informado."/>
+        -->
     </validators>
 </view>
