@@ -3,6 +3,6 @@
 <view>
     <mform id="formBase" title="Catálogo de Produtos" close=">pedidos/main">
         <action action="formFind" label="Buscar produto" />
-        <action action="formNew" label="Cadastrar produto" />
+        <action action="formNew" label="Novo produto" />
     </mform>
 </view>

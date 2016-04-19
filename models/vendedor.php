@@ -1,23 +1,6 @@
 <?php
 
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage pedidos
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
-
 namespace pedidos\models;
-
-require_once 'exceptions/ModelException.php';
-
-use pedidos\exceptions\ModelException as ModelException;
-use pedidos\models\Cliente as Cliente;
 
 class Vendedor extends map\VendedorMap {
 
@@ -30,6 +13,11 @@ class Vendedor extends map\VendedorMap {
                 'email' => array('notnull', 'notblank'),
                 'dataCadastro' => array('notnull', 'notblank'),
                 'dataUltimaAtualizacao' => array('notnull', 'notblank'),
+            ),
+            'fieldDescription' => array(
+                'nome' => 'Nome do vendedor',
+                'cpf' => 'CPF do vendedor',
+                'email' => 'E-Mail do vendedor',
             ),
             'converters' => array()
         );
@@ -53,11 +41,19 @@ class Vendedor extends map\VendedorMap {
         return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
     }
 
-    public function getTotalClientesByIdVendedor($idVendedor) {
-
-        $critetia = $this->getCriteria()->select("count(carteiraClientes.idCliente)")->where("idVendedor = " . "{$idVendedor}");
-        $result = $critetia->asQuery()->getResult();
-        return $result[0][0];
+    public function getTotalClientesByIdVendedor($idVendedor = null) {
+        try {
+            if ($idVendedor) {
+                $id_vendedor = $idVendedor;
+            } else {
+                $id_vendedor = $this->idVendedor;
+            }
+            $critetia = $this->getCriteria()->select("count(carteiraClientes.idCliente)")->where("idVendedor = " . "{$id_vendedor}");
+            $result = $critetia->asQuery()->getResult();
+            return $result[0][0];
+        } catch (Exception $ex) {
+            throw new \EModelException("Ocorreu um erro durante a contagem de clientes do Vendedor.");
+        }
     }
 
     public function getTotalPedidos($idVendedor = null) {
@@ -100,16 +96,31 @@ class Vendedor extends map\VendedorMap {
 
     public function save() {
         try {
-
             $this->setCpf(str_replace("-", "", str_replace(".", "", $this->getCpf())));
-
             if (!$this->isPersistent()) {
                 $this->setDataCadastro(\Manager::getSysTime());
             }
             $this->setDataUltimaAtualizacao(\Manager::getSysTime());
             parent::save();
-        } catch (\Exception $ex) {
+        } catch (\EDataValidationException $ex) {
             throw $ex;
+        } catch (\EDBException $ex) {
+            throw $this->handleException($ex->getMessage());
+        } catch (\Exception $ex) {
+            throw new \EModelException("Ocorreu um erro ao gravar os dados do vendedor. Por favor, tente novamente ou contate o suporte.");
+        }
+    }
+
+    private function handleException($exceptionMessage) {
+        if (strpos($exceptionMessage, "Duplicate entry") !== false) {
+            if (strpos($exceptionMessage, "cpf")) {
+                return new \EModelException("O CPF informado já está cadastrado para outro vendedor.");
+            }
+            if (strpos($exceptionMessage, "email")) {
+                return new \EModelException("O e-mail informado já está cadastrado para outro vendedor.");
+            }
+        } else {
+            return new \EModelException("Ocorreu um erro ao salva os dados do Cliente.");
         }
     }
 
@@ -130,20 +141,23 @@ class Vendedor extends map\VendedorMap {
         }
     }
 
+    /**
+     * Adiciona um novo Cliente à Carteita de Clientes do Vendedor.
+     * @param \pedidos\models\Cliente $cliente Cliente a ser adicionado à Carteira de Clientes.
+     * @throws \EModelException
+     */
     public function addNovoClienteCarteira($cliente) {
-
         try {
-
             if ($this->pertenceACarteiraClientes($cliente)) {
-                throw new ModelException("O Cliente informado já faz parte da Carteira de Clientes deste vendedor.");
+                throw new \EModelException("O Cliente informado já faz parte da Carteira de Clientes deste vendedor.");
             }
             $this->getAssociationCarteiraClientes();
             $this->carteiraClientes->append($cliente);
             $this->saveAssociation('carteiraClientes');
-        } catch (ModelException $mEx) {
+        } catch (\EModelException $mEx) {
             throw $mEx;
         } catch (\Exception $ex) {
-            throw new ModelException("Ocorreu um erro ao adicionar o cliente na Carteira de Clientes.", 0, $ex);
+            throw new \EModelException("Ocorreu um erro ao adicionar o cliente na Carteira de Clientes.", 0, $ex);
         }
     }
 

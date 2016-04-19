@@ -20,5 +20,6 @@
         <mrequiredvalidator field="produto::nome" message="O nome do produto deve ser informato."/>
         <mrequiredvalidator field="produto::codigoEAN" message="O código EAN do produto deve ser informato."/>
         <mrequiredvalidator field="produto::situacao" message="Informe a situação do produto."/>
+        <mrequiredvalidator field="produto::precoUnitario" message="O preço unitário do produto deve ser informado."/>
     </validators>
 </view>

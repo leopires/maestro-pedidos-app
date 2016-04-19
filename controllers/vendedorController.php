@@ -1,21 +1,9 @@
 <?php
 
-/**
- * $_comment
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage $_package
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 Manager::import("pedidos\models\*");
 
 use pedidos\models\Vendedor as Vendedor;
 use pedidos\models\Cliente as Cliente;
-use pedidos\exceptions\ModelException as ModelException;
 
 class VendedorController extends MController {
 
@@ -71,10 +59,16 @@ class VendedorController extends MController {
     }
 
     public function save() {
-        $vendedor = new Vendedor($this->data->vendedor);
-        $vendedor->save();
-        $go = '>pedidos/vendedor/formObject/' . $vendedor->getId();
-        $this->renderPrompt('information', 'OK', $go);
+        try {
+            $vendedor = new Vendedor($this->data->vendedor);
+            $vendedor->save();
+            $go = '>pedidos/vendedor/formObject/' . $vendedor->getId();
+            $this->renderPrompt('information', 'Dados do vendedor ' . $vendedor->getNome() . ' gravados com sucesso.', $go);
+        } catch (EDataValidationException $ex) {
+            $this->promptError($ex->getMessage());
+        } catch (EModelException $ex) {
+            $this->promptError($ex->getMessage());
+        }
     }
 
     public function delete() {
@@ -103,9 +97,7 @@ class VendedorController extends MController {
     }
 
     public function addClienteCarteira() {
-
         $go = "";
-
         try {
             if ($this->data->idCliente) {
                 $vendedor = $this->getVendedor($this->data->idVendedor);
@@ -113,7 +105,7 @@ class VendedorController extends MController {
                 $vendedor->addNovoClienteCarteira(new Cliente($this->data->idCliente));
                 $this->promptInformation("Carteira de Clientes atualizada com sucesso.", $go);
             }
-        } catch (ModelException $ex) {
+        } catch (EModelException $ex) {
             $this->promptError($ex->getMessage(), $go);
         } catch (Exception $ex) {
             $this->promptError("Ocorreu um erro ao atualizar a Carteira de Clientes. Por favor, tente novamente ou contate o suporte.", $go);

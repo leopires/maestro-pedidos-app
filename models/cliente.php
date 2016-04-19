@@ -1,22 +1,6 @@
 <?php
 
-/**
- * 
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage pedidos
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
-
 namespace pedidos\models;
-
-require_once 'exceptions/ModelException.php';
-
-use pedidos\exceptions\ModelException as ModelException;
 
 class Cliente extends map\ClienteMap {
 
@@ -58,30 +42,45 @@ class Cliente extends map\ClienteMap {
         return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
     }
 
+    /**
+     * Recupera os Clientes de um determinado vendedor.
+     * @param integer $idVendedor Vendedor o qual se quer recuperar a lista de Clientes.
+     * @return Criteria
+     */
     public function listByVendedor($idVendedor) {
-        try {
-            return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
-        } catch (Exception $ex) {
-            throw new ModelException("Ocorreu um erro ao recuperar os Clientes do Vendedor.");
-        }
+        return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
     }
 
+    /**
+     * Salva os dados do Cliente criando um novo registro ou atualizando um cliente já existente.
+     * @throws \EModelException Caso algum erro ocorra durante a gravação dos dados.
+     */
     public function save() {
-
         try {
             if (!$this->isPersistent()) {
                 $this->setDataCadastro(\Manager::getSysTime());
             }
             $this->setDataUltimaAtualizacao(\Manager::getSysTime());
             parent::save();
-        } catch (\MDataValidationException $ex) {
-            throw new ModelException($ex->getMessage());
+        } catch (\EDataValidationException $ex) {
+            throw new \EModelException($ex->getMessage());
+        } catch (\EDBException $ex) {
+            throw $this->handleException($ex->getMessage());
         } catch (\Exception $ex) {
-            if (((strpos($ex->getMessage(), "23000") !== false)) && (strpos($ex->getMessage(), "email"))) {
-                throw new ModelException("O e-mail informado já está cadastrado para outra pessoa.");
-            } else {
-                throw new ModelException("Ocorreu um erro ao salvar os dados do Cliente.");
-            }
+            throw new \EModelException("Ocorreu um erro ao salvar o dados do cliente. Por favor, tente novamente ou contate o suporte.");
+        }
+    }
+
+    /**
+     * Trata a mensagem de excessão.
+     * @param string $exceptionMessage
+     * @return \EModelException
+     */
+    private function handleException($exceptionMessage) {
+        if ((strpos($exceptionMessage, "Duplicate entry") !== false) && (strpos($exceptionMessage, "email"))) {
+            return new \EModelException("O e-mail informado já está cadastrado para outra pessoa.");
+        } else {
+            return new \EModelException("Ocorreu um erro ao salva os dados do Cliente.");
         }
     }
 

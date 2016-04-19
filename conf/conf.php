@@ -6,11 +6,6 @@ return array(
     'import' => array(
         'models.*'
     ),
-    'login' => array(
-        'module' => "",
-        'class' => "MAuthDbMd5",
-        'check' => false
-    ),
     'theme' => array(
         'name' => 'default',
         'template' => 'index'

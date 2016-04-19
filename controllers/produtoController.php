@@ -5,21 +5,26 @@ Manager::import("pedidos\models\*");
 class ProdutoController extends MController {
 
     private $situacoesProduto;
-    
+
     public function init() {
         parent::init();
         $this->situacoesProduto = array("" => "Selecione", "1" => "Ativo", "0" => "Inativo");
     }
-    
+
     public function main() {
         $this->render("formBase");
     }
 
     public function formFind() {
-        $produto = new Produto($this->data->id);
-        $filter->idProduto = $this->data->idProduto;
-        $this->data->query = $produto->listByFilter($filter)->asQuery();
-        $this->render();
+
+        try {
+            $produto = new Produto($this->data->id);
+            $filter->idProduto = $this->data->idProduto;
+            $this->data->query = $produto->listByFilter($filter)->asQuery();
+            $this->render();
+        } catch (Exception $ex) {
+            
+        }
     }
 
     public function formNew() {
@@ -56,10 +61,15 @@ class ProdutoController extends MController {
     }
 
     public function save() {
-        $produto = new Produto($this->data->produto);
-        $produto->save();
-        $go = '>pedidos/produto/formObject/' . $produto->getId();
-        $this->renderPrompt('information', 'OK', $go);
+        try {
+            mdump($this->data);
+            $produto = new Produto($this->data->produto);
+            $produto->save();
+            $go = '>pedidos/produto/formObject/' . $produto->getId();
+            $this->renderPrompt(MPrompt::MSG_TYPE_INFORMATION, 'Dados do produto gravados com sucesso.', $go);
+        } catch (Exception $ex) {
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
+        }
     }
 
     public function delete() {

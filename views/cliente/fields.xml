@@ -13,9 +13,7 @@
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
     </buttons>
     <validators>
-        <!--
         <mrequiredvalidator field="cliente::nome" message="O nome do Cliente não foi informado."/>
         <mrequiredvalidator field="cliente::email" message="O e-mail de contato com o Cliente não foi informado."/>
-        -->
     </validators>
 </view>

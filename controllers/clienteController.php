@@ -1,20 +1,8 @@
 <?php
 
-/**
- * $_comment
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage $_package
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 Manager::import("pedidos\models\*");
 
 use pedidos\models\Cliente as Cliente;
-use pedidos\exceptions\ModelException as ModelException;
 
 class ClienteController extends MController {
 
@@ -54,7 +42,6 @@ class ClienteController extends MController {
     }
 
     public function formDelete() {
-
         try {
             $cliente = new Cliente($this->data->id);
             $ok = '>pedidos/cliente/delete/' . $cliente->getId();
@@ -77,7 +64,6 @@ class ClienteController extends MController {
     }
 
     public function save() {
-
         try {
             $cliente = new Cliente($this->data->id);
             $cliente->setNome($this->data->cliente->nome);
@@ -86,7 +72,7 @@ class ClienteController extends MController {
             $cliente->save();
             $go = '>pedidos/cliente/formObject/' . $cliente->getId();
             $this->renderPrompt('information', 'Dados do cliente: ' . $cliente->getNome() . ' gravados com sucesso.', $go);
-        } catch (ModelException $ex) {
+        } catch (Exception $ex) {
             $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
         }
     }

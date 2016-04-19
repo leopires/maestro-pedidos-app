@@ -1,21 +1,9 @@
 <?php
-/**
- * @category   Maestro
- * @package    UFJF
- * @subpackage pedidos
- * @copyright  Copyright (c) 2003-2013 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version
- * @since
- */
-
-// wizard - code section created by Wizard Module
 
 namespace pedidos\models\map;
 
 class ProdutoMap extends \MBusinessModel {
 
-    
     public static function ORMMap() {
 
         return array(
@@ -23,56 +11,63 @@ class ProdutoMap extends \MBusinessModel {
             'database' => 'db_pedidos',
             'table' => 'PRODUTO',
             'attributes' => array(
-                'idProduto' => array('column' => 'idProduto','key' => 'primary','idgenerator' => 'seq_PRODUTO','type' => 'long'),
-                'nome' => array('column' => 'nome','type' => 'string'),
-                'descricao' => array('column' => 'descricao','type' => 'string'),
-                'codigoEAN' => array('column' => 'codigoEAN','type' => 'string'),
-                'precoUnitario' => array('column' => 'precoUnitario','type' => 'double'),
-                'ativo' => array('column' => 'ativo','type' => 'byte'),
-                'dataCadastro' => array('column' => 'dataCadastro','type' => 'date'),
-                'dataUltimaAtualizacao' => array('column' => 'dataUltimaAtualizacao','type' => 'date'),
+                'idProduto' => array('column' => 'idProduto', 'key' => 'primary', 'idgenerator' => 'identity', 'type' => 'long'),
+                'nome' => array('column' => 'nome', 'type' => 'string'),
+                'descricao' => array('column' => 'descricao', 'type' => 'string'),
+                'codigoEAN' => array('column' => 'codigoEAN', 'type' => 'string'),
+                'precoUnitario' => array('column' => 'precoUnitario', 'type' => 'currency'),
+                'ativo' => array('column' => 'ativo', 'type' => 'byte'),
+                'dataCadastro' => array('column' => 'dataCadastro', 'type' => 'timestamp'),
+                'dataUltimaAtualizacao' => array('column' => 'dataUltimaAtualizacao', 'type' => 'timestamp'),
             ),
             'associations' => array(
-                'historicoVenda' => array('toClass' => 'pedidos\models\pedidoitem', 'cardinality' => 'oneToMany' , 'keys' => 'idProduto:idProduto'), 
+                'historicoVenda' => array('toClass' => 'pedidos\models\pedidoitem', 'cardinality' => 'oneToMany', 'keys' => 'idProduto:idProduto'),
             )
         );
     }
-    
+
     /**
      * 
      * @var long 
      */
     protected $idProduto;
+
     /**
      * 
      * @var string 
      */
     protected $nome;
+
     /**
      * 
      * @var string 
      */
     protected $descricao;
+
     /**
      * 
      * @var string 
      */
     protected $codigoEAN;
+
     /**
      * 
      * @var double 
      */
     protected $precoUnitario;
+
     /**
      * 
      * @var byte 
      */
     protected $ativo;
+
     /**
      * 
      * @var date 
      */
     protected $dataCadastro;
+
     /**
      * 
      * @var date 
@@ -83,7 +78,6 @@ class ProdutoMap extends \MBusinessModel {
      * Associations
      */
     protected $historicoVenda;
-    
 
     /**
      * Getters/Setters
@@ -125,6 +119,9 @@ class ProdutoMap extends \MBusinessModel {
     }
 
     public function setPrecoUnitario($value) {
+        if (!($value instanceof \MCurrency)) {
+            $value = new \MCurrency($value);
+        }
         $this->precoUnitario = $value;
     }
 
@@ -141,8 +138,8 @@ class ProdutoMap extends \MBusinessModel {
     }
 
     public function setDataCadastro($value) {
-        if (!($value instanceof \MDate)) {
-            $value = new \MDate($value);
+        if (!($value instanceof \MTimestamp)) {
+            $value = new \MTimestamp($value);
         }
         $this->dataCadastro = $value;
     }
@@ -152,21 +149,23 @@ class ProdutoMap extends \MBusinessModel {
     }
 
     public function setDataUltimaAtualizacao($value) {
-        if (!($value instanceof \MDate)) {
-            $value = new \MDate($value);
+        if (!($value instanceof \MTimestamp)) {
+            $value = new \MTimestamp($value);
         }
         $this->dataUltimaAtualizacao = $value;
     }
+
     /**
      *
      * @return Association
      */
     public function getHistoricoVenda() {
-        if (is_null($this->historicoVenda)){
+        if (is_null($this->historicoVenda)) {
             $this->retrieveAssociation("historicoVenda");
         }
-        return  $this->historicoVenda;
+        return $this->historicoVenda;
     }
+
     /**
      *
      * @param Association $value
@@ -174,6 +173,7 @@ class ProdutoMap extends \MBusinessModel {
     public function setHistoricoVenda($value) {
         $this->historicoVenda = $value;
     }
+
     /**
      *
      * @return Association
@@ -182,9 +182,7 @@ class ProdutoMap extends \MBusinessModel {
         $this->retrieveAssociation("historicoVenda");
     }
 
-    
-
 }
-// end - wizard
 
+// end - wizard
 ?>

@@ -17,5 +17,8 @@
         <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
     </buttons>
     <validators>
+        <mrequiredvalidator field="vendedor::nome" message="O nome do Vendedor não foi informado."/>
+        <mrequiredvalidator field="vendedor::cpf" message="O CPF do Vendedor não foi informado."/>
+        <mrequiredvalidator field="vendedor::email" message="O e-mail do Vendedor não foi informado."/>
     </validators>
 </view>
