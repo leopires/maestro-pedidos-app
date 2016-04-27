@@ -2,7 +2,6 @@
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
     <fields>
-        
         <mhiddenfield id="vendedor::idVendedor" />
         <mseparator label="Idendificação do vendedor"/> 
         <mhcontainer>

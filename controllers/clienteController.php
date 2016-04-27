@@ -35,7 +35,6 @@ class ClienteController extends MController {
 
     public function formUpdate() {
         $cliente = new Cliente($this->data->id);
-        mdump($cliente->getData());
         $this->data->cliente = $cliente->getData();
         $this->data->action = '@pedidos/cliente/save/' . $this->data->id;
         $this->render();
@@ -53,7 +52,6 @@ class ClienteController extends MController {
     }
 
     public function lookup() {
-
         try {
             $cliente = new Cliente();
             $this->data->query = $cliente->listByNome($this->data->nomeCliente);

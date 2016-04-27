@@ -2,14 +2,17 @@
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
     <fields>
-         <mhiddenfield id="pedido::idPedido" />        
-<mcalendarfield id="pedido::dataCriacao" label="DataCriacao" />        
-<mcalendarfield id="pedido::dataUltimaAtualizacao" label="DataUltimaAtualizacao" />        
-<mlookupfieldvalue id="pedido::idVendedorDesc"  label="Vendedor"  related="pedido::idVendedor:idVendedor,pedido::idVendedorDesc:descricao" action="pedidos/vendedor/lookup" /><mhiddenfield id="pedido::idVendedor" />
+        <mhiddenfield id="pedido::idPedido" />
+        <mhiddenfield id="pedido::idVendedor" />
+        <mlookupfieldvalue id="nomeVendedor"  label="Vendedor:"  related="pedido::idVendedor:idVendedor,nomeVendedor:nome" action="pedidos/vendedor/lookup" width="350px">
+            <event event="onChange" handler="setupLookupCliente();" preventDefault="false"/>
+        </mlookupfieldvalue>
+        <mspacer height="10px"/>
+        <mhiddenfield id="pedido::idCliente" />
+        <mlookupfieldvalue id="nomeCliente"  label="Cliente:" related="pedido::idCliente:idCliente,nomeCliente:nome" action="pedidos/pedido/lookupClientesByVendedor" width="350px" />
     </fields>
     <buttons>
-        <mbutton id="btnPost" text="Enviar" action="$this->data->action"/>
+        <mbutton id="btnNext" text="Avançar" action="$this->data->action"/>
     </buttons>
-    <validators>
-    </validators>
+    <javascript file="{{ $this->view->getPath() . '/fields.js' }}"/> 
 </view>

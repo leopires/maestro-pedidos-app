@@ -4,12 +4,13 @@
     <mform title="Pesquisa Vendedor" close="close" enterAction="submit">
         <fields>
             <mhcontainer>
-                <mtextfield id="filter0" label="IdVendedor" value="$this->data->filter0" size="30" />
+                <mtextfield id="nomeVendedor" label="Nome do vendedor:" size="30" />
                 <mbuttonfind />
             </mhcontainer>
-            <mdatagrid id="lookupTable" query="$this->data->query" pageLength="15">
+            <mspacer height="10px"/>
+            <mdatagrid id="lkpVendedores" query="$this->data->query" pageLength="15">
                 <mdatagridcolumn field="idVendedor" visible="false"/>
-                <mdatagridhyperlink field="idVendedor" title="IdVendedor" width="100%"/>
+                <mdatagridhyperlink field="nome" title="Nome do vendedor" width="100%"/>
             </mdatagrid>
         </fields>
     </mform>

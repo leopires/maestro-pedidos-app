@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
-    <mform id="formFind" title="Pesquisar" close=">pedidos/main" base="formBase">
+    <mform id="formFind" title="Buscar pedido" close=">pedidos/main" base="formBase">
         <fields>
             <mhcontainer>
                 <mtextfield id="idPedido" label="IdPedido" value="$this->data->idPedido" size="15" />

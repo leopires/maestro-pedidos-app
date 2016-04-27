@@ -52,10 +52,13 @@ class VendedorController extends MController {
     }
 
     public function lookup() {
-        $model = new Vendedor();
-        $filter->idVendedor = $this->data->idVendedor;
-        $this->data->query = $model->listByFilter($filter)->asQuery();
-        $this->render();
+        try {
+            $vendedor = new Vendedor();
+            $this->data->query = $vendedor->listByNome($this->data->nomeVendedor);
+            $this->render();
+        } catch (Exception $ex) {
+            $this->promptError("Ocorreu um erro ao carregar a pesquisa de Vendedores.");
+        }
     }
 
     public function save() {

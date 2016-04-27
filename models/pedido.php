@@ -4,6 +4,10 @@ namespace pedidos\models;
 
 class Pedido extends map\PedidoMap {
 
+    public static $SITUACAO_NOVO = 1;
+    public static $SITUACAO_FATURADO = 2;
+    public static $SITUACAO_CANCELADO = 3;
+
     public static function config() {
         return array(
             'log' => array(),
@@ -11,6 +15,18 @@ class Pedido extends map\PedidoMap {
             ),
             'converters' => array()
         );
+    }
+
+    public function save() {
+        try {
+            if (!$this->isPersistent()) {
+                $this->setDataCriacao(\Manager::getSysTime());
+            }
+            $this->setDataUltimaAtualizacao(\Manager::getSysTime());
+            parent::save();
+        } catch (Exception $ex) {
+            throw new \EModelException($ex->getMessage());
+        }
     }
 
     public function getDescription() {

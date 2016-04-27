@@ -9,6 +9,7 @@ class ProdutoController extends MController {
     public function init() {
         parent::init();
         $this->situacoesProduto = array("" => "Selecione", "1" => "Ativo", "0" => "Inativo");
+        $this->data->situacoesProduto = $this->situacoesProduto;
     }
 
     public function main() {
@@ -16,10 +17,12 @@ class ProdutoController extends MController {
     }
 
     public function formFind() {
-
+        $filter = new stdClass();
         try {
             $produto = new Produto($this->data->id);
-            $filter->idProduto = $this->data->idProduto;
+            $filter->nomeProduto = $this->data->nomeProduto;
+            $filter->codigoEAN = $this->data->codigoEAN;
+            $filter->situacao = $this->data->situacao;
             $this->data->query = $produto->listByFilter($filter)->asQuery();
             $this->render();
         } catch (Exception $ex) {
@@ -28,7 +31,6 @@ class ProdutoController extends MController {
     }
 
     public function formNew() {
-        $this->data->situacoesProduto = $this->situacoesProduto;
         $this->data->action = '@pedidos/produto/save';
         $this->render();
     }
@@ -41,7 +43,6 @@ class ProdutoController extends MController {
     public function formUpdate() {
         $produto = new Produto($this->data->id);
         $this->data->produto = $produto->getData();
-
         $this->data->action = '@pedidos/produto/save/' . $this->data->id;
         $this->render();
     }
@@ -62,8 +63,12 @@ class ProdutoController extends MController {
 
     public function save() {
         try {
-            mdump($this->data);
-            $produto = new Produto($this->data->produto);
+            $produto = new Produto($this->data->id);
+            $produto->setNome($this->data->produto->nome);
+            $produto->setCodigoEAN($this->data->produto->codigoEAN);
+            $produto->setDescricao($this->data->produto->descricao);
+            $produto->setAtivo($this->data->produto->ativo);
+            $produto->setPrecoUnitario($this->data->produto->precoUnitario);
             $produto->save();
             $go = '>pedidos/produto/formObject/' . $produto->getId();
             $this->renderPrompt(MPrompt::MSG_TYPE_INFORMATION, 'Dados do produto gravados com sucesso.', $go);

@@ -50,6 +50,15 @@ class Cliente extends map\ClienteMap {
     public function listByVendedor($idVendedor) {
         return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
     }
+    
+    public function listByVendedorAndNome($idVendedor, $nomeVendedor = null) {
+        $criteria = $this->listByVendedor($idVendedor);
+        if($nomeVendedor) {
+            $nome = filter_var($nomeVendedor, FILTER_SANITIZE_MAGIC_QUOTES);
+            $criteria->where("nome LIKE '%{$nome}%'");
+        }
+        return $criteria;
+    }
 
     /**
      * Salva os dados do Cliente criando um novo registro ou atualizando um cliente já existente.

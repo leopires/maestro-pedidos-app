@@ -1,15 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
-    <mform id="formFind" title="Pesquisar" close=">pedidos/main" base="formBase">
+    <mform id="formFind" title="Pesquisa de Produtos" close=">pedidos/main" base="formBase">
         <fields>
             <mhcontainer>
-                <mtextfield id="idProduto" label="IdProduto" value="$this->data->idProduto" size="15" />
+                <mtextfield id="nomeProduto" label="Nome do produto:" value="$this->data->nomeProduto" width="300px" />
+                <mtextfield id="codigoEAN" label="Código EAN:" value="$this->data->codigoEAN" />
+                <mselection id="situacao" label="Situação:" options="$this->data->situacoesProduto" type="selectOnly" width="200px" />
                 <mbuttonfind/>
             </mhcontainer>
+            <mspacer height="10px"/>
             <mdatagrid id="gridFind" query="$this->data->query" pageLength="15">
                 <mdatagridcolumn field="idProduto" visible="false"/>
-                <mdatagridhyperlink field="idProduto" action=">pedidos/produto/formObject/#0#" title="IdProduto" width="100%"/>
+                <mdatagridhyperlink field="nome" action=">pedidos/produto/formObject/#0#" title="Produto" width="40%"/>
+                <mdatagridcolumn field="codigoEAN" title="Código EAN" width="20%"/>
+                <mdatagridcolumn field="precoUnitario" title="Preço Unitário" render="{{ array('rendersgrid','gridProdutosPrecoUnitario')}}" width="20%"/>
+                <mdatagridcolumn field="ativo" title="Situação" render="{{ array('rendersgrid','gridProdutoSituacaoProduto')}}" width="20%"/>
             </mdatagrid>
         </fields>
     </mform>

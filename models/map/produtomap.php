@@ -16,7 +16,7 @@ class ProdutoMap extends \MBusinessModel {
                 'descricao' => array('column' => 'descricao', 'type' => 'string'),
                 'codigoEAN' => array('column' => 'codigoEAN', 'type' => 'string'),
                 'precoUnitario' => array('column' => 'precoUnitario', 'type' => 'currency'),
-                'ativo' => array('column' => 'ativo', 'type' => 'byte'),
+                'ativo' => array('column' => 'ativo', 'type' => 'integer'),
                 'dataCadastro' => array('column' => 'dataCadastro', 'type' => 'timestamp'),
                 'dataUltimaAtualizacao' => array('column' => 'dataUltimaAtualizacao', 'type' => 'timestamp'),
             ),

@@ -1,17 +1,8 @@
 <?php
-/**
- * $_comment
- *
- * @category   Maestro
- * @package    UFJF
- * @subpackage $_package
- * @copyright  Copyright (c) 2003-2012 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version    
- * @since      
- */
 
 Manager::import("pedidos\models\*");
+
+use pedidos\models\Pedido as Pedido;
 
 class PedidoController extends MController {
 
@@ -20,7 +11,8 @@ class PedidoController extends MController {
     }
 
     public function formFind() {
-        $pedido= new Pedido($this->data->id);
+        $filter = new stdClass();
+        $pedido = new Pedido($this->data->id);
         $filter->idPedido = $this->data->idPedido;
         $this->data->query = $pedido->listByFilter($filter)->asQuery();
         $this->render();
@@ -37,11 +29,11 @@ class PedidoController extends MController {
     }
 
     public function formUpdate() {
-        $pedido= new Pedido($this->data->id);
+        $pedido = new Pedido($this->data->id);
         $this->data->pedido = $pedido->getData();
         $this->data->pedido->idVendedorDesc = $pedido->getVendedor()->getDescription();
-	
-        $this->data->action = '@pedidos/pedido/save/' .  $this->data->id;
+
+        $this->data->action = '@pedidos/pedido/save/' . $this->data->id;
         $this->render();
     }
 
@@ -52,6 +44,28 @@ class PedidoController extends MController {
         $this->renderPrompt('confirmation', "Confirma remoção do Pedido [{pedido->getDescription()}] ?", $ok, $cancelar);
     }
 
+    public function lookupClientesByVendedor() {
+        try {
+            
+            if(!$this->data->id) {
+                throw new Exception("Por favor, selecione o Vendedor.");
+            }
+            
+            $cliente = new \pedidos\models\Cliente();
+            $idVendedor = $this->data->id;
+            $nomeCliente = $this->data->nomeCliente;
+            $this->data->query = $cliente->listByVendedorAndNome($idVendedor, $nomeCliente);
+            $this->render("cliente/lookup");
+        } catch (Exception $ex) {
+            $go = ">pedidos/pedido/reloadMe";
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage(), $go);
+        }
+    }
+    
+    public function reloadMe() {
+        $this->redirect("formNew");
+    }
+
     public function lookup() {
         $model = new Pedido();
         $filter->idPedido = $this->data->idPedido;
@@ -60,17 +74,24 @@ class PedidoController extends MController {
     }
 
     public function save() {
-            $pedido = new Pedido($this->data->pedido);
+        try {
+            $pedido = new Pedido($this->data->id);
+            $pedido->setIdVendedor($this->data->pedido->idVendedor);
+            $pedido->setIdCliente($this->data->pedido->idCliente);
+            $pedido->setSituacao(Pedido::$SITUACAO_NOVO);
             $pedido->save();
             $go = '>pedidos/pedido/formObject/' . $pedido->getId();
-            $this->renderPrompt('information','OK',$go);
+            $this->renderPrompt(MPrompt::MSG_TYPE_INFORMATION, "Pedido {$pedido->getIdPedido()} criado com sucesso.", $go);
+        } catch (Exception $ex) {
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
+        }
     }
 
     public function delete() {
-            $pedido = new Pedido($this->data->id);
-            $pedido->delete();
-            $go = '>pedidos/pedido/formFind';
-            $this->renderPrompt('information',"Pedido [{$this->data->idPedido}] removido.", $go);
+        $pedido = new Pedido($this->data->id);
+        $pedido->delete();
+        $go = '>pedidos/pedido/formFind';
+        $this->renderPrompt('information', "Pedido [{$this->data->idPedido}] removido.", $go);
     }
 
 }

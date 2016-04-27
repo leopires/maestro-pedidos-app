@@ -23,7 +23,7 @@ class PedidoMap extends \MBusinessModel {
             'table' => 'PEDIDO',
             'attributes' => array(
                 'idPedido' => array('column' => 'idPedido', 'key' => 'primary', 'idgenerator' => 'identity', 'type' => 'long'),
-                'situacao' => array('column' => 'situacao', 'type' => 'byte'),
+                'situacao' => array('column' => 'situacao', 'type' => 'integer'),
                 'dataCriacao' => array('column' => 'dataCriacao', 'type' => 'timestamp'),
                 'dataUltimaAtualizacao' => array('column' => 'dataUltimaAlteracao', 'type' => 'timestamp'),
                 'idCliente' => array('column' => 'idCliente', 'key' => 'foreign', 'type' => 'long'),

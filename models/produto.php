@@ -14,7 +14,22 @@ class Produto extends map\ProdutoMap {
     }
 
     public function listByFilter($filter = null) {
-        $criteria = $this->getCriteria()->select('*');
+
+        mdump($filter);
+
+        $criteria = $this->getCriteria()->select('*')->orderBy("nome");
+
+        if ($filter->nomeProduto) {
+            $criteria->where("nome LIKE '%{$filter->nomeProduto}%'");
+        }
+
+        if ($filter->codigoEAN) {
+            $criteria->where("codigoEAN = '{$filter->codigoEAN}'");
+        }
+        if (($filter->situacao == "0") || ($filter->situacao == "1")) {
+            $criteria->where("ativo = {$filter->situacao}");
+        }
+
         return $criteria;
     }
 
