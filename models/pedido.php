@@ -17,6 +17,10 @@ class Pedido extends map\PedidoMap {
         );
     }
 
+    public function getDescription() {
+        return $this->getIdPedido();
+    }
+
     public function save() {
         try {
             if (!$this->isPersistent()) {
@@ -29,10 +33,6 @@ class Pedido extends map\PedidoMap {
         }
     }
 
-    public function getDescription() {
-        return $this->getIdPedido();
-    }
-
     public function listByFilter($filter) {
         $criteria = $this->getCriteria()->select('*')->orderBy('idPedido');
         if ($filter->idPedido) {
@@ -41,12 +41,18 @@ class Pedido extends map\PedidoMap {
         return $criteria;
     }
 
+    /**
+     * Dado um determinado Vendedor, recupera o número de pedidos dele.
+     * @param Integer $idVendedor Identificador do Vendedor.
+     * @return Integer Número de pedidos do Vendedor.
+     * @throws \EModelException Caso algum erro ocorra durante a contagem dos pedidos.
+     */
     public function getTotalPedidosByIdVendedor($idVendedor) {
         try {
             $criteria = $this->getCriteria()->select("count(idPedido)")->where("vendedor.idVendedor = " . "{$idVendedor}");
             return $criteria->asQuery()->getResult()[0][0];
         } catch (Exception $ex) {
-            throw new ModelException("Ocorreu um erro ao recuperar o total de pedidos do Vendedor.");
+            throw new \EModelException("Ocorreu um erro ao recuperar o total de pedidos do Vendedor.");
         }
     }
 

@@ -23,7 +23,7 @@ class PedidoitemMap extends \MBusinessModel {
             'database' => 'db_pedidos',
             'table' => 'PEDIDOITEM',
             'attributes' => array(
-                'idPedidoItem' => array('column' => 'idPedidoItem','key' => 'primary','idgenerator' => 'seq_PEDIDOITEM','type' => 'long'),
+                'idPedidoItem' => array('column' => 'idPedidoItem','key' => 'primary','idgenerator' => 'identity','type' => 'long'),
                 'quantidade' => array('column' => 'quantidade','type' => 'integer'),
                 'idPedido' => array('column' => 'idPedido','key' => 'foreign','type' => 'long'),
                 'idProduto' => array('column' => 'idProduto','key' => 'foreign','type' => 'long'),

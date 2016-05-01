@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <mform id="formItensPedido" title="{{'Itens do Pedido Nº: '. str_pad($this->data->pedido->idPedido, 9, '0', STR_PAD_LEFT)}}" close=">pedidos/pedido/formFind" base="formBase">
+        <mhiddenfield id="idPedido" value="$this->data->pedido->idPedido"/>
+        <mbasegroup id="bsgrpDadosPedido" caption="Dados do pedido">
+            <mvcontainer>
+                <mtextlabel id="txtlblNomeCliente" label="Cliente:" bold="true" text="$this->data->pedido->nomeCliente" />
+                <mspacer height="5px"/>
+                <mtextlabel id="txtlblNomeVendedor" label="Vendedor:" bold="true" text="$this->data->pedido->nomeVendedor" />
+                <mspacer height="5px"/>
+                <mtextlabel id="txtlblDataPedido" label="Data do pedido:" bold="true" text="$this->data->pedido->dataPedido" />
+            </mvcontainer>
+        </mbasegroup>
+        <mspacer height="10px"/>
+        <mbasegroup id="bsgrpItendPedido" caption="Itens do pedido">
+            <mhcontainer>
+                <mselection id="produto" label="Produto:" options="$this->data->listaProdutos" />
+                <mnumberfield id="quantidade" label="Quantidade:" width="80px"/>
+                <mbutton id="btnAddItemPedido" text="Adicionar" action="@pedidos/pedido/addItemPedido"/>
+            </mhcontainer>
+        </mbasegroup>
+    </mform>
+</view>

@@ -7,7 +7,7 @@ return array(
         'models.*'
     ),
     'theme' => array(
-        'name' => 'default',
+        'name' => 'pedidos',
         'template' => 'index'
     ),
     'db' => array(

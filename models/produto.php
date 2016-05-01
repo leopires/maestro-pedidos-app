@@ -14,9 +14,7 @@ class Produto extends map\ProdutoMap {
     }
 
     public function listByFilter($filter = null) {
-
-        mdump($filter);
-
+        
         $criteria = $this->getCriteria()->select('*')->orderBy("nome");
 
         if ($filter->nomeProduto) {
@@ -31,6 +29,12 @@ class Produto extends map\ProdutoMap {
         }
 
         return $criteria;
+    }
+    
+    public function listAllProdutosAtivos() {
+        $filter = new \stdClass();
+        $filter->situacao = "1";
+        return $this->listByFilter($filter);
     }
 
     public static function listStatusProduto() {
