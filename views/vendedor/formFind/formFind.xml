@@ -18,10 +18,7 @@
     </fields>
     <help>
         <mhelp id="form" caption="Ajuda - Pesquisa de vendedores">
-<![CDATA[
-<h1>Ajuda</h1>
-<p></p>
-]]>
+<![CDATA[]]>
         </mhelp>
     </help>
 </view>

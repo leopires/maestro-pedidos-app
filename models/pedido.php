@@ -4,9 +4,10 @@ namespace pedidos\models;
 
 class Pedido extends map\PedidoMap {
 
-    public static $SITUACAO_NOVO = 1;
-    public static $SITUACAO_FATURADO = 2;
-    public static $SITUACAO_CANCELADO = 3;
+    public static $PEDIDO_SITUACAO_NOVO = 1;
+    public static $PEDIDO_SITUACAO_EMITIDO = 2;
+    public static $PEDIDO_SITUACAO_FATURADO = 3;
+    public static $PEDIDO_SITUACAO_CANCELADO = 4;
 
     public static function config() {
         return array(
@@ -15,6 +16,14 @@ class Pedido extends map\PedidoMap {
             ),
             'converters' => array()
         );
+    }
+
+    public static function getSituacoes() {
+        return array(1 => "NOVO", 2 => "EMITIDO", 3 => "FATURADO", 4 => "CANCELADO");
+    }
+
+    public function getNumeroPedidoFormatado() {
+        return str_pad($this->getIdPedido(), 9, '0', STR_PAD_LEFT);
     }
 
     public function getDescription() {
@@ -34,11 +43,14 @@ class Pedido extends map\PedidoMap {
     }
 
     public function listByFilter($filter) {
-        $criteria = $this->getCriteria()->select('*')->orderBy('idPedido');
-        if ($filter->idPedido) {
-            $criteria->where("idPedido LIKE '{$filter->idPedido}%'");
-        }
-        return $criteria;
+        $criteria = $this->getCriteria()
+                ->select("idPedido")
+                ->select("dataCriacao")
+                ->select("cliente.nome as cliente")
+                ->select("vendedor.nome as vendedor")
+                ->select("situacao");
+
+        return $criteria->orderBy("idPedido");
     }
 
     /**
@@ -53,6 +65,49 @@ class Pedido extends map\PedidoMap {
             return $criteria->asQuery()->getResult()[0][0];
         } catch (Exception $ex) {
             throw new \EModelException("Ocorreu um erro ao recuperar o total de pedidos do Vendedor.");
+        }
+    }
+
+    public function calculaValorTotalPedido() {
+        $valorTotalPedido = 0;
+        try {
+            $this->getAssociationItensPedido();
+            foreach ($this->itensPedido as $pedidoItem) {
+                $totalItem = ($pedidoItem->getProduto()->getPrecoUnitario()->getValue() * $pedidoItem->getQuantidade());
+                $valorTotalPedido +=$totalItem;
+            }
+            return $valorTotalPedido;
+        } catch (\Exception $ex) {
+            throw new \EModelException("Ocorreu um erro durante o cáculo do valor total do pedido.");
+        }
+    }
+
+    /**
+     * Lista os Itens do Pedido
+     * - idPedidoItem
+     * - nome : Nome do Produto
+     * - quantidade: Quantidade do item.
+     * @return type
+     */
+    public function listItensPedido() {
+        $pedidoItem = new Pedidoitem();
+        return $pedidoItem->listPedidoItemByIdPedido($this->getIdPedido());
+    }
+
+    public function trocaSituacaoPedidoParaEmitido() {
+        try {
+            $this->trocaSituacaoPedido(Pedido::$PEDIDO_SITUACAO_EMITIDO);
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    private function trocaSituacaoPedido($novaSituacao) {
+        try {
+            $this->setSituacao($novaSituacao);
+            $this->save();
+        } catch (Exception $ex) {
+            throw new \EModelException("Ocorreu um erro ao alterar a situação do pedido.");
         }
     }
 

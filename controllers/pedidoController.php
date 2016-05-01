@@ -45,7 +45,7 @@ class PedidoController extends MController {
     }
 
     public function formItensPedido() {
-
+        $this->data->emitirPedido = "@pedidos/pedido/emitirPedido";
         try {
             $pedido = $this->recuperaPedido();
             $this->data->pedido->idPedido = $pedido->getIdPedido();
@@ -53,6 +53,9 @@ class PedidoController extends MController {
             $this->data->pedido->nomeVendedor = $pedido->getVendedor()->getNome();
             $this->data->pedido->dataPedido = $pedido->getDataCriacao()->format();
             $this->data->listaProdutos = $this->getListaProdutos();
+            $this->data->itensPedido = $pedido->listItensPedido()->asQuery();
+            $currencyFormatter = new MCurrencyFormatter();
+            $this->data->valorTotalPedido = $currencyFormatter->formatWithSymbol($pedido->calculaValorTotalPedido());
             $this->render();
         } catch (EControllerException $ex) {
             $go = ">pedidos/pedido/formFind";
@@ -61,10 +64,21 @@ class PedidoController extends MController {
             $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
         }
     }
+    
+    public function emitirPedido() {
+        try {
+            $pedido = new Pedido($this->data->idPedido);
+            $pedido->trocaSituacaoPedidoParaEmitido();
+            $goSucess = ">pedidos/pedido/formFind";
+            $this->renderPrompt(MPrompt::MSG_TYPE_INFORMATION, "Pedido Nº {$pedido->getNumeroPedidoFormatado()} emitido com sucesso!", $goSucess);
+        } catch (Exception $ex) {
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
+        }
+    }
 
     private function recuperaPedido() {
         try {
-            
+
             if (empty($this->data->id)) {
                 throw new EControllerException("ID do pedido indefinida.");
             }
@@ -75,13 +89,13 @@ class PedidoController extends MController {
             if (!$pedido->isPersistent()) {
                 throw new EControllerException("Nenhum pedido encontrado com o ID: {$idPedido}");
             }
-            
+
             return $pedido;
         } catch (Exception $ex) {
             throw $ex;
         }
     }
-    
+
     private function getListaProdutos() {
         try {
             $produto = new pedidos\models\Produto();
@@ -90,7 +104,7 @@ class PedidoController extends MController {
             throw $ex;
         }
     }
-    
+
     public function addItemPedido() {
         try {
             $itemPedido = new pedidos\models\Pedidoitem();
@@ -98,7 +112,8 @@ class PedidoController extends MController {
             $itemPedido->setIdProduto($this->data->produto);
             $itemPedido->setQuantidade($this->data->quantidade);
             $itemPedido->save();
-            $this->redirect("formItensPedido/" + $this->data->idPedido);
+            $goSucess = ">pedidos/pedido/formItensPedido/" . $this->data->idPedido;
+            $this->renderPrompt(MPrompt::MSG_TYPE_INFORMATION, "Item incluído com sucesso no pedido.", $goSucess);
         } catch (Exception $ex) {
             $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
         }
@@ -137,7 +152,7 @@ class PedidoController extends MController {
             $pedido = new Pedido($this->data->id);
             $pedido->setIdVendedor($this->data->pedido->idVendedor);
             $pedido->setIdCliente($this->data->pedido->idCliente);
-            $pedido->setSituacao(Pedido::$SITUACAO_NOVO);
+            $pedido->setSituacao(Pedido::$PEDIDO_SITUACAO_NOVO);
             $pedido->save();
             $nextStepItensPedido = '>pedidos/pedido/formItensPedido/' . $pedido->getIdPedido();
             $this->renderPrompt(MPrompt::MSG_TYPE_INFORMATION, "Pedido {$pedido->getIdPedido()} criado com sucesso. Na tela seguinte, você deverá informar os itens deste pedido.", $nextStepItensPedido);

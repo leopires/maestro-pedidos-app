@@ -6,24 +6,22 @@ class Pedidoitem extends map\PedidoitemMap {
 
     public static function config() {
         return array(
-            'log' => array(  ),
-            'validators' => array(
-            ),
+            'log' => array(),
+            'validators' => array(),
             'converters' => array()
         );
     }
-    
-    public function getDescription(){
-        return $this->getIdPedidoItem();
+
+    public function listPedidoItemByIdPedido($idPedido) {
+        return $this->getCriteria()
+                        ->select("idPedidoItem")
+                        ->select("produto.nome")
+                        ->select("produto.precoUnitario")
+                        ->select("quantidade")
+                        ->select("(produto.precoUnitario*quantidade) AS totalItem")
+                        ->where("idPedido = {$idPedido}")->orderBy("produto.nome");
     }
 
-    public function listByFilter($filter){
-        $criteria = $this->getCriteria()->select('*')->orderBy('idPedidoItem');
-        if ($filter->idPedidoItem){
-            $criteria->where("idPedidoItem LIKE '{$filter->idPedidoItem}%'");
-        }
-        return $criteria;
-    }
 }
 
 ?>

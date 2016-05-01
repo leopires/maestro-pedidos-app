@@ -4,12 +4,15 @@
     <mform id="formFind" title="Buscar pedido" close=">pedidos/main" base="formBase">
         <fields>
             <mhcontainer>
-                <mtextfield id="idPedido" label="IdPedido" value="$this->data->idPedido" size="15" />
+                <mtextfield id="txtfldNumeroPedido" label="Nº do Pedido:" value="$this->data->idPedido" width="100px" />
                 <mbuttonfind/>
             </mhcontainer>
-            <mdatagrid id="gridFind" query="$this->data->query" pageLength="15">
-                <mdatagridcolumn field="idPedido" visible="false"/>
-                <mdatagridhyperlink field="idPedido" action=">pedidos/pedido/formObject/#0#" title="IdPedido" width="100%"/>
+            <mdatagrid id="gridPedidos" query="$this->data->query" pageLength="15">
+                <mdatagridhyperlink field="idPedido" action=">pedidos/pedido/formObject/#0#" title="Nº do Pedido" width="15%"/>
+                <mdatagridcolumn field="cliente" title="Cliente" width="30%"/>
+                <mdatagridcolumn field="vendedor" title="Vendedor" width="30%"/>
+                <mdatagridcolumn field="dataCriacao" title="Data do pedido" width="15%"/>
+                <mdatagridcolumn field="situacao" title="Situação" width="10%"/>
             </mdatagrid>
         </fields>
     </mform>

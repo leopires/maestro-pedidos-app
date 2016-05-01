@@ -1,24 +1,43 @@
 <?xml version="1.0"?>
 <!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
 <view>
-    <mform id="formItensPedido" title="{{'Itens do Pedido Nº: '. str_pad($this->data->pedido->idPedido, 9, '0', STR_PAD_LEFT)}}" close=">pedidos/pedido/formFind" base="formBase">
-        <mhiddenfield id="idPedido" value="$this->data->pedido->idPedido"/>
-        <mbasegroup id="bsgrpDadosPedido" caption="Dados do pedido">
-            <mvcontainer>
-                <mtextlabel id="txtlblNomeCliente" label="Cliente:" bold="true" text="$this->data->pedido->nomeCliente" />
-                <mspacer height="5px"/>
-                <mtextlabel id="txtlblNomeVendedor" label="Vendedor:" bold="true" text="$this->data->pedido->nomeVendedor" />
-                <mspacer height="5px"/>
-                <mtextlabel id="txtlblDataPedido" label="Data do pedido:" bold="true" text="$this->data->pedido->dataPedido" />
-            </mvcontainer>
-        </mbasegroup>
-        <mspacer height="10px"/>
-        <mbasegroup id="bsgrpItendPedido" caption="Itens do pedido">
-            <mhcontainer>
-                <mselection id="produto" label="Produto:" options="$this->data->listaProdutos" />
-                <mnumberfield id="quantidade" label="Quantidade:" width="80px"/>
-                <mbutton id="btnAddItemPedido" text="Adicionar" action="@pedidos/pedido/addItemPedido"/>
-            </mhcontainer>
-        </mbasegroup>
+    <mform id="formItensPedido" title="{{'Pedido Nº: '. str_pad($this->data->pedido->idPedido, 9, '0', STR_PAD_LEFT)}}" close=">pedidos/pedido/formFind" base="formBase">
+        <fields>
+            <mhiddenfield id="idPedido" value="$this->data->pedido->idPedido"/>
+            <mbasegroup id="bsgrpDadosPedido" caption="Dados do pedido">
+                <mvcontainer>
+                    <mtextlabel id="txtlblNomeCliente" label="Cliente:" bold="true" text="$this->data->pedido->nomeCliente" />
+                    <mspacer height="5px"/>
+                    <mtextlabel id="txtlblNomeVendedor" label="Vendedor:" bold="true" text="$this->data->pedido->nomeVendedor" />
+                    <mspacer height="5px"/>
+                    <mtextlabel id="txtlblDataPedido" label="Data do pedido:" bold="true" text="$this->data->pedido->dataPedido" />
+                    <mspacer height="25px"/>
+                    <mlabel id="txtlblTotalPedido" bold="true" color="blue" text="Valor total do pedido:" />
+                    <mlabel id="txtlblValorTotalPedido" bold="true" color="red" fontSize="18px" text="$this->data->valorTotalPedido" />
+                </mvcontainer>
+            </mbasegroup>
+            <mspacer height="10px"/>
+            <mbox id="bxItensPedido" caption="Itens do Pedido">
+                <mbasegroup id="bsgrpItendPedido" caption="Adicionar um novo item ao pedido">
+                    <mhcontainer>
+                        <mselection id="produto" label="Produto:" options="$this->data->listaProdutos" />
+                        <mnumberfield id="quantidade" label="Quantidade:" width="80px"/>
+                        <mbutton id="btnAddItemPedido" text="Adicionar" action="@pedidos/pedido/addItemPedido"/>
+                    </mhcontainer>
+                </mbasegroup>
+                <mspacer height="15px"/>
+                <mdatagrid id="gridItensPedido" query="$this->data->itensPedido">
+                    <mdatagridcolumn field="idPedidoItem" visible="false" width="0%" />
+                    <mdatagridcolumn field="nome" title="Item do pedido" width="70%" />
+                    <mdatagridcolumn field="precoUnitario" title="Valor unitário" render="{{ array('rendersgrid','formataValorCurrency')}}" width="10%" />
+                    <mdatagridcolumn field="quantidade" title="Quantidade pedida" width="10%" />
+                    <mdatagridcolumn field="totalItem" title="Total do item" align="right" render="{{ array('rendersgrid','formataValorCurrency')}}" width="10%" />
+                </mdatagrid>
+            </mbox>
+
+        </fields>
+        <buttons>
+            <mbutton id="btnEmitirPedido" text="Emitir Pedido" action="$this->data->emitirPedido"/>
+        </buttons>
     </mform>
 </view>
