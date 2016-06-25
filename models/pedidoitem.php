@@ -7,12 +7,16 @@ class Pedidoitem extends map\PedidoitemMap {
     public static function config() {
         return array(
             'log' => array(),
-            'validators' => array(),
+            'validators' => array(
+                'idVendedor' => array('notnull', 'notblank'),
+                'idCliente' => array('notnull', 'notblank'),
+                'quantidade' => array('notnull', 'notblank'),
+            ),
             'converters' => array()
         );
     }
 
-    public function listPedidoItemByIdPedido($idPedido) {
+    public function listByIdPedido($idPedido) {
         return $this->getCriteria()
                         ->select("idPedidoItem")
                         ->select("produto.nome")

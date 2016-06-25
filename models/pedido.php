@@ -13,9 +13,27 @@ class Pedido extends map\PedidoMap {
         return array(
             'log' => array(),
             'validators' => array(
+                'idVendedor' => array('notnull', 'notblank'),
+                'idCliente' => array('notnull', 'notblank'),
+                'situacao' => array('notnull', 'notblank'),
+                'dataCriacao' => array('notnull', 'notblank'),
+                'dataUltimaAlteracao' => array('notnull', 'notblank'),
+            ),
+            'fieldDescription' => array(
+                'idVendedor' => 'Vendedor do pedido',
+                'idCliente' => 'Cliente do pedido',
+                'situacao' => 'Situação do pedido'
             ),
             'converters' => array()
         );
+    }
+
+    public static function formataNumeroPedido($idPedido) {
+        return str_pad($idPedido, 9, '0', STR_PAD_LEFT);
+    }
+
+    public static function getDescricaoSituacao($situacao) {
+        return Pedido::getSituacoes()[$situacao];
     }
 
     public static function getSituacoes() {
@@ -23,7 +41,7 @@ class Pedido extends map\PedidoMap {
     }
 
     public function getNumeroPedidoFormatado() {
-        return str_pad($this->getIdPedido(), 9, '0', STR_PAD_LEFT);
+        return Pedido::formataNumeroPedido($this->getIdPedido());
     }
 
     public function getDescription() {

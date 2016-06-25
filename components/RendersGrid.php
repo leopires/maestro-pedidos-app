@@ -22,5 +22,4 @@ class RendersGrid {
         $formatter = new MCurrencyFormatter();
         return $formatter->formatWithSymbol($value);
     }
-
 }

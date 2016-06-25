@@ -34,7 +34,6 @@
                     <mdatagridcolumn field="totalItem" title="Total do item" align="right" render="{{ array('rendersgrid','formataValorCurrency')}}" width="10%" />
                 </mdatagrid>
             </mbox>
-
         </fields>
         <buttons>
             <mbutton id="btnEmitirPedido" text="Emitir Pedido" action="$this->data->emitirPedido"/>

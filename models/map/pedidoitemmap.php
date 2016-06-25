@@ -1,15 +1,4 @@
 <?php
-/**
- * @category   Maestro
- * @package    UFJF
- * @subpackage pedidos
- * @copyright  Copyright (c) 2003-2013 UFJF (http://www.ufjf.br)
- * @license    http://siga.ufjf.br/license
- * @version
- * @since
- */
-
-// wizard - code section created by Wizard Module
 
 namespace pedidos\models\map;
 
