@@ -11,10 +11,19 @@ class PedidoController extends MController {
     }
 
     public function formFind() {
-        $filter = new stdClass();
-        $pedido = new Pedido($this->data->id);
-        $filter->idPedido = $this->data->idPedido;
-        $this->data->query = $pedido->listByFilter($filter)->asQuery();
+
+        $resultQuery = null;
+        $pedido = new Pedido();
+
+        if ($this->data->numeroPedido) {
+            $resultQuery = $pedido->listByNumeroPedido($this->data->numeroPedido);
+        } else if (($this->data->dataInicio) || ($this->data->dataFim)) {
+            $resultQuery = $pedido->listEntreDatas($this->data->dataInicio, $this->data->dataFim);
+        } else {
+            $resultQuery = $pedido->listAll();
+        }
+
+        $this->data->query = $resultQuery;
         $this->render();
     }
 
@@ -64,7 +73,7 @@ class PedidoController extends MController {
             $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, $ex->getMessage());
         }
     }
-    
+
     public function emitirPedido() {
         try {
             $pedido = new Pedido($this->data->idPedido);

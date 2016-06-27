@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE view SYSTEM "../../../../public/layouts/view.dtd">
+<view>
+    <fields>
+        <mhcontainer>
+            <mtextfield id="numeroPedido" label="Número do Pedido:" width="100px" />
+            <mbasegroup id="bsgrpDatas" caption="Pesquisa entre datas">
+                <mhcontainer>    
+                    <mcalendarfield id="dataInicio" label="De"/>
+                    <mcalendarfield id="dataFim" label="Até"/>
+                </mhcontainer>    
+            </mbasegroup>
+            <mbuttonfind/>
+        </mhcontainer>
+        <mspacer height="10px"/>
+        <mdatagrid id="gridPedidos" query="$this->data->query" pageLength="15" rowMethod="{{ array('formFind','formataDadosPedidos')}}">
+            <mdatagridhyperlink field="idPedido" action=">pedidos/pedido/formObject/#0#" title="Nº do Pedido" width="15%" />
+            <mdatagridcolumn field="situacao" title="Situação" width="10%"/>
+            <mdatagridcolumn field="cliente" title="Cliente" width="30%"/>
+            <mdatagridcolumn field="vendedor" title="Vendedor" width="30%"/>
+            <mdatagridcolumn field="dataCriacao" title="Data do Pedido" width="15%"/>
+        </mdatagrid>
+    </fields>
+</view>

@@ -8,11 +8,15 @@ class Pedidoitem extends map\PedidoitemMap {
         return array(
             'log' => array(),
             'validators' => array(
-                'idVendedor' => array('notnull', 'notblank'),
-                'idCliente' => array('notnull', 'notblank'),
+                'idProduto' => array('notnull', 'notblank'),
+                'idPedido' => array('notnull', 'notblank'),
                 'quantidade' => array('notnull', 'notblank'),
             ),
-            'converters' => array()
+            'fieldDescription' => array(
+                'idProduto' => 'Produto ',
+                'idPedido' => 'ID do Pedido ',
+                'quantidade' => 'Quantidade '
+            )
         );
     }
 

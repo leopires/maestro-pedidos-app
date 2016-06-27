@@ -33,13 +33,13 @@ class Cliente extends map\ClienteMap {
     }
 
     /**
-     * Faz uma pesquina nos Clientes pelo nome.
+     * Permite que Clientes possam ser encontrados pelo nome.
      * @param String $nome Nome ou parte do nome a ser pesquisado.
      * @return Criteria Pesquisa a ser executada.
      */
     public function listByNome($nome) {
         $nomeCliente = filter_var($nome, FILTER_SANITIZE_MAGIC_QUOTES);
-        return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'");
+        return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'")->orderBy("nome");
     }
 
     /**
@@ -50,10 +50,10 @@ class Cliente extends map\ClienteMap {
     public function listByVendedor($idVendedor) {
         return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
     }
-    
+
     public function listByVendedorAndNome($idVendedor, $nomeVendedor = null) {
         $criteria = $this->listByVendedor($idVendedor);
-        if($nomeVendedor) {
+        if ($nomeVendedor) {
             $nome = filter_var($nomeVendedor, FILTER_SANITIZE_MAGIC_QUOTES);
             $criteria->where("nome LIKE '%{$nome}%'");
         }

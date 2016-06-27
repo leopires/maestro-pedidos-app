@@ -12,7 +12,7 @@
             <mspacer height="10px"/>
             <mdatagrid id="gridFind" query="$this->data->query" pageLength="15">
                 <mdatagridcolumn field="idProduto" visible="false"/>
-                <mdatagridhyperlink field="nome" action=">pedidos/produto/formObject/#0#" title="Produto" width="40%"/>
+                <mdatagridhyperlink field="nome" action=">pedidos/produto/formObject/#0#" title="Produto" width="40%" />
                 <mdatagridcolumn field="codigoEAN" title="Código EAN" width="20%"/>
                 <mdatagridcolumn field="precoUnitario" title="Preço Unitário" render="{{ array('rendersgrid','formataValorCurrency')}}" width="20%"/>
                 <mdatagridcolumn field="ativo" title="Situação" render="{{ array('rendersgrid','gridProdutoSituacaoProduto')}}" width="20%"/>

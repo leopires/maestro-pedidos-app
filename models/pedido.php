@@ -45,7 +45,7 @@ class Pedido extends map\PedidoMap {
     }
 
     public function getDescription() {
-        return $this->getIdPedido();
+        return "Pedido Nº: " + Pedido::formataNumeroPedido($this->idPedido);
     }
 
     public function save() {
@@ -60,7 +60,7 @@ class Pedido extends map\PedidoMap {
         }
     }
 
-    public function listByFilter($filter) {
+    public function listAll() {
         $criteria = $this->getCriteria()
                 ->select("idPedido")
                 ->select("dataCriacao")
@@ -69,6 +69,28 @@ class Pedido extends map\PedidoMap {
                 ->select("situacao");
 
         return $criteria->orderBy("idPedido");
+    }
+
+    public function listByNumeroPedido($numeroPedido) {
+        $numeroPedido = filter_var($numeroPedido, FILTER_SANITIZE_MAGIC_QUOTES);
+        return $this->listAll()->where("idPedido = {$numeroPedido}");
+    }
+    
+    public function listEntreDatas($dataInicio = null, $dataFim = null) {
+        
+        $criteria = $this->listAll();
+        
+        if($dataInicio) {
+            $dataInicio = filter_var($dataInicio, FILTER_SANITIZE_MAGIC_QUOTES);
+            $criteria->where("dataCriacao >= '{$dataInicio}'");
+        }
+        
+        if($dataFim) {
+            $dataFim = filter_var($dataFim, FILTER_SANITIZE_MAGIC_QUOTES);
+            $criteria->where("dataCriacao <= '{$dataFim}'");
+        }
+        
+        return $criteria;
     }
 
     /**
@@ -109,7 +131,7 @@ class Pedido extends map\PedidoMap {
      */
     public function listItensPedido() {
         $pedidoItem = new Pedidoitem();
-        return $pedidoItem->listPedidoItemByIdPedido($this->getIdPedido());
+        return $pedidoItem->listByIdPedido($this->getIdPedido());
     }
 
     public function trocaSituacaoPedidoParaEmitido() {

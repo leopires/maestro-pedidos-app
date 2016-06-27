@@ -11,15 +11,13 @@ class ClienteController extends MController {
     }
 
     public function formFind() {
-
         try {
             $cliente = new Cliente();
             $nome = $this->data->nomeCliente;
             $this->data->query = $cliente->listByNome($nome)->asQuery();
-        } catch (Exception $ex) {
-            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, "Aconteceu um erro durante a busca do Cliente. Por favor, tente novamente ou contate o suporte.");
-        } finally {
             $this->render();
+        } catch (Exception $ex) {
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, "Ocorreu um erro ao listar os Clientes. Por favor, tente novamente ou contate o suporte.");
         }
     }
 
