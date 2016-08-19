@@ -75,21 +75,21 @@ class Pedido extends map\PedidoMap {
         $numeroPedido = filter_var($numeroPedido, FILTER_SANITIZE_MAGIC_QUOTES);
         return $this->listAll()->where("idPedido = {$numeroPedido}");
     }
-    
+
     public function listEntreDatas($dataInicio = null, $dataFim = null) {
-        
+
         $criteria = $this->listAll();
-        
-        if($dataInicio) {
+
+        if ($dataInicio) {
             $dataInicio = filter_var($dataInicio, FILTER_SANITIZE_MAGIC_QUOTES);
-            $criteria->where("dataCriacao >= '{$dataInicio}'");
+            $criteria->where("dataCriacao", ">=", "'{$dataInicio}'");
         }
-        
-        if($dataFim) {
+
+        if ($dataFim) {
             $dataFim = filter_var($dataFim, FILTER_SANITIZE_MAGIC_QUOTES);
-            $criteria->where("dataCriacao <= '{$dataFim}'");
+            $criteria->where("dataCriacao", "<=", "'{$dataFim}'");
         }
-        
+
         return $criteria;
     }
 

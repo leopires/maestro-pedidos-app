@@ -35,17 +35,17 @@ class Cliente extends map\ClienteMap {
     /**
      * Permite que Clientes possam ser encontrados pelo nome.
      * @param String $nome Nome ou parte do nome a ser pesquisado.
-     * @return Criteria Pesquisa a ser executada.
+     * @return \PersistentCriteria Pesquisa a ser executada.
      */
     public function listByNome($nome) {
-        $nomeCliente = filter_var($nome, FILTER_SANITIZE_MAGIC_QUOTES);
+        $nomeCliente = filter_var($nome, FILTER_SANITIZE_STRING);
         return $this->getBasicCriteria()->where("nome LIKE '%{$nomeCliente}%'")->orderBy("nome");
     }
 
     /**
      * Recupera os Clientes de um determinado vendedor.
      * @param integer $idVendedor Vendedor o qual se quer recuperar a lista de Clientes.
-     * @return Criteria
+     * @return \PersistentCriteria
      */
     public function listByVendedor($idVendedor) {
         return $this->getBasicCriteria()->where("vendedores.idVendedor = " . "{$idVendedor}");
@@ -92,7 +92,7 @@ class Cliente extends map\ClienteMap {
             return new \EModelException("Ocorreu um erro ao salva os dados do Cliente.");
         }
     }
-
+    
 }
 
 ?>

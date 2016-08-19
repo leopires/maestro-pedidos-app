@@ -23,7 +23,7 @@ class PedidoController extends MController {
             $resultQuery = $pedido->listAll();
         }
 
-        $this->data->query = $resultQuery;
+        $this->data->query = $resultQuery->asQuery();
         $this->render();
     }
 

@@ -1,13 +1,14 @@
 <?php
 
-Manager::import("pedidos\models\*");
-
 use pedidos\models\Cliente as Cliente;
 
 class ClienteController extends MController {
 
+    const ACTION_PEDIDOS_MAIN = ">pedidos/main";
+    const ACTION_PEDIDOS_CLIENTE_FORM_FIND = ">pedidos/cliente/formFind";
+
     public function main() {
-        $this->render("formBase");
+        $this->redirect(Manager::getURL(self::ACTION_PEDIDOS_CLIENTE_FORM_FIND));
     }
 
     public function formFind() {
@@ -17,7 +18,7 @@ class ClienteController extends MController {
             $this->data->query = $cliente->listByNome($nome)->asQuery();
             $this->render();
         } catch (Exception $ex) {
-            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, "Ocorreu um erro ao listar os Clientes. Por favor, tente novamente ou contate o suporte.");
+            $this->renderPrompt(MPrompt::MSG_TYPE_ERROR, "Ocorreu um erro ao listar os Clientes. Por favor, tente novamente ou contate o suporte.", self::ACTION_PEDIDOS_MAIN);
         }
     }
 
