@@ -15,7 +15,6 @@ class formFind extends MForm {
     }
 
     public function formataDadosPedidos($currentRow, $rowData, $actions, $columns, $query, $grid) {
-        
         $columns["idPedido"]->control[$currentRow]->setText(Pedido::formataNumeroPedido($rowData[0]));
         $columns["situacao"]->control[$currentRow]->setValue(Pedido::getSituacoes()[$rowData[4]]);
     }

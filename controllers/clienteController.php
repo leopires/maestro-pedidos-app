@@ -2,16 +2,19 @@
 
 use pedidos\models\Cliente as Cliente;
 
-class ClienteController extends MController {
+class ClienteController extends MController
+{
 
     const ACTION_PEDIDOS_MAIN = ">pedidos/main";
     const ACTION_PEDIDOS_CLIENTE_FORM_FIND = ">pedidos/cliente/formFind";
 
-    public function main() {
+    public function main()
+    {
         $this->redirect(Manager::getURL(self::ACTION_PEDIDOS_CLIENTE_FORM_FIND));
     }
 
-    public function formFind() {
+    public function formFind()
+    {
         try {
             $cliente = new Cliente();
             $nome = $this->data->nomeCliente;
@@ -22,24 +25,28 @@ class ClienteController extends MController {
         }
     }
 
-    public function formNew() {
+    public function formNew()
+    {
         $this->data->action = '@pedidos/cliente/save';
         $this->render();
     }
 
-    public function formObject() {
+    public function formObject()
+    {
         $this->data->cliente = Cliente::create($this->data->id)->getData();
         $this->render();
     }
 
-    public function formUpdate() {
+    public function formUpdate()
+    {
         $cliente = new Cliente($this->data->id);
         $this->data->cliente = $cliente->getData();
         $this->data->action = '@pedidos/cliente/save/' . $this->data->id;
         $this->render();
     }
 
-    public function formDelete() {
+    public function formDelete()
+    {
         try {
             $cliente = new Cliente($this->data->id);
             $ok = '>pedidos/cliente/delete/' . $cliente->getId();
@@ -50,7 +57,8 @@ class ClienteController extends MController {
         }
     }
 
-    public function lookup() {
+    public function lookup()
+    {
         try {
             $cliente = new Cliente();
             $this->data->query = $cliente->listByNome($this->data->nomeCliente);
@@ -60,7 +68,8 @@ class ClienteController extends MController {
         }
     }
 
-    public function save() {
+    public function save()
+    {
         try {
             $cliente = new Cliente($this->data->id);
             $cliente->setNome($this->data->cliente->nome);
@@ -74,7 +83,8 @@ class ClienteController extends MController {
         }
     }
 
-    public function delete() {
+    public function delete()
+    {
 
         try {
             $cliente = new Cliente($this->data->id);

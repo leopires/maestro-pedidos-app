@@ -19,7 +19,10 @@ class Vendedor extends map\VendedorMap {
                 'cpf' => 'CPF do vendedor',
                 'email' => 'E-Mail do vendedor',
             ),
-            'converters' => array()
+            'converters' => array(
+                'nome' => array('case' => 'upper'),
+                'email' => array('case' => 'upper')
+            )
         );
     }
 

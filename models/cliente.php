@@ -19,7 +19,10 @@ class Cliente extends map\ClienteMap {
                 'email' => 'E-Mail do cliente',
                 'telefone' => 'Telefone do cliente'
             ),
-            'converters' => array()
+            'converters' => array(
+                'nome' => array('case' => 'upper'),
+                'email' => array('case'=> 'upper')
+            )
         );
     }
 

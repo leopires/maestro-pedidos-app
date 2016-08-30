@@ -1,6 +1,5 @@
 <?php
-
-Manager::import("pedidos\models\*");
+use pedidos\models\Produto as Produto;
 
 class ProdutoController extends MController {
 
@@ -10,10 +9,6 @@ class ProdutoController extends MController {
         parent::init();
         $this->situacoesProduto = array("" => "Selecione", "1" => "Ativo", "0" => "Inativo");
         $this->data->situacoesProduto = $this->situacoesProduto;
-    }
-
-    public function main() {
-        $this->render("formBase");
     }
 
     public function formFind() {

@@ -14,8 +14,8 @@
                 <mdatagridcolumn field="idProduto" visible="false"/>
                 <mdatagridhyperlink field="nome" action=">pedidos/produto/formObject/#0#" title="Produto" width="40%" />
                 <mdatagridcolumn field="codigoEAN" title="Código EAN" width="20%"/>
-                <mdatagridcolumn field="precoUnitario" title="Preço Unitário" render="{{ array('rendersgrid','formataValorCurrency')}}" width="20%"/>
-                <mdatagridcolumn field="ativo" title="Situação" render="{{ array('rendersgrid','gridProdutoSituacaoProduto')}}" width="20%"/>
+                <mdatagridcolumn field="precoUnitario" title="Preço Unitário" render="{{ array('RendersGrid','formataValorCurrency')}}" width="20%"/>
+                <mdatagridcolumn field="ativo" title="Situação" render="{{ array('RendersGrid','gridProdutoSituacaoProduto')}}" width="20%"/>
             </mdatagrid>
         </fields>
     </mform>

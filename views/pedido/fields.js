@@ -4,7 +4,7 @@ function setupLookupCliente() {
     
     lookupNomeCliente.setContext({
         name: 'lookupNomeCliente',
-        action: '/maestro/index.php/pedidos/pedido/lookupClientesByVendedor/' + getidVendedorSelecionado(),
+        action: '/~leonardo/maestro/index.php/pedidos/pedido/lookupClientesByVendedor/' + getidVendedorSelecionado(),
         related: 'pedido::idCliente:idCliente,nomeCliente:nome',
         filter: '',
         form: 'formNew',
